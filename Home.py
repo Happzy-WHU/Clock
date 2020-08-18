@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import ClickLabel,resources,SendJSON,Connect,Stage,Message
+from src import ClickLabel, resources, SendJSON, Connect, Stage, Message
 import time
 from datetime import datetime
 import cv2
@@ -11,12 +11,11 @@ from PyQt5.QtCore import *
 import os
 import sys
 import base64
+
 class Ui_Home(object):
     def __init__(self, WidgetStack, UIStack):
         self.WidgetStack = WidgetStack
         self.UIStack = UIStack
-
-
 
     WidgetStack = None
     UIStack = None
@@ -25,7 +24,8 @@ class Ui_Home(object):
     capTime = 0
     stage1 = Stage.stage()
     stage2 = Stage.stage()
-
+    typeStack=[]
+    midStack=[]
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -40,96 +40,96 @@ class Ui_Home(object):
         self.pushButton = QtWidgets.QPushButton(self.frame)
         self.pushButton.setGeometry(QtCore.QRect(30, 110, 55, 54))
         self.pushButton.setStyleSheet("\n"
-"QPushButton{\n"
-"border:none;\n"
-"background:url(:/resources/home.png);}\n"
-"")
+                                      "QPushButton{\n"
+                                      "border:none;\n"
+                                      "background:url(:/resources/home.png);}\n"
+                                      "")
         self.pushButton.setText("")
         self.pushButton.setDefault(False)
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.frame)
         self.pushButton_2.setGeometry(QtCore.QRect(30, 235, 55, 55))
         self.pushButton_2.setStyleSheet("\n"
-"QPushButton{\n"
-"border:none;\n"
-"background:url(:/resources/user.png)}")
+                                        "QPushButton{\n"
+                                        "border:none;\n"
+                                        "background:url(:/resources/user.png)}")
         self.pushButton_2.setText("")
         self.pushButton_2.setDefault(False)
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_4 = QtWidgets.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(30, 360, 55, 55))
         self.pushButton_4.setStyleSheet("\n"
-"QPushButton{\n"
-"border:none;\n"
-"background:url(:/resources/message.png)}")
+                                        "QPushButton{\n"
+                                        "border:none;\n"
+                                        "background:url(:/resources/message.png)}")
         self.pushButton_4.setText("")
         self.pushButton_4.setDefault(False)
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_3.setGeometry(QtCore.QRect(30, 486, 55, 55))
         self.pushButton_3.setStyleSheet("\n"
-"QPushButton{\n"
-"border:none;background:url(:/resources/chart.png)}\n"
-"")
+                                        "QPushButton{\n"
+                                        "border:none;background:url(:/resources/chart.png)}\n"
+                                        "")
         self.pushButton_3.setText("")
         self.pushButton_3.setDefault(False)
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_5 = QtWidgets.QPushButton(self.frame)
         self.pushButton_5.setGeometry(QtCore.QRect(30, 611, 55, 53))
         self.pushButton_5.setStyleSheet("\n"
-"QPushButton{\n"
-"border:none;background:url(:/resources/clock.png)}")
+                                        "QPushButton{\n"
+                                        "border:none;background:url(:/resources/clock.png)}")
         self.pushButton_5.setText("")
         self.pushButton_5.setDefault(False)
         self.pushButton_5.setObjectName("pushButton_5")
         self.stackedWidget = QtWidgets.QStackedWidget(Form)
         self.stackedWidget.setGeometry(QtCore.QRect(120, 0, 891, 772))
         self.stackedWidget.setStyleSheet("*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"\n"
-"    background-color: rgb(231, 231, 231);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:black;\n"
-"background:rgb(231, 231, 231);\n"
-"}\n"
-"QPushButton{\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"QDialog{\n"
-"color:black;\n"
-"}\n"
-"\n"
-"")
+                                         "font-size:24px;\n"
+                                         "font-family:Century Gothic;\n"
+                                         "\n"
+                                         "}\n"
+                                         "#Apply{ \n"
+                                         "    \n"
+                                         "}\n"
+                                         "QFrame{\n"
+                                         "\n"
+                                         "    background-color: rgb(231, 231, 231);\n"
+                                         "border-radius:15px;\n"
+                                         "}\n"
+                                         "\n"
+                                         "QToolButton{\n"
+                                         "background:#49ebff;\n"
+                                         "border-radius:60px;\n"
+                                         "}\n"
+                                         "QLabel{\n"
+                                         "color:black;\n"
+                                         "background:rgb(231, 231, 231);\n"
+                                         "}\n"
+                                         "QPushButton{\n"
+                                         "    \n"
+                                         "background-color: rgb(119, 174, 255);\n"
+                                         "border-radius:15px;\n"
+                                         "font-color:white;\n"
+                                         "}\n"
+                                         "QPushButton:hover{\n"
+                                         "    background-color: rgb(106, 107, 189);\n"
+                                         "border-radius:15px;\n"
+                                         "\n"
+                                         "}\n"
+                                         "QLineEdit{\n"
+                                         "\n"
+                                         "\n"
+                                         "color:#717072;\n"
+                                         "border-bottom:1px solid #717072;\n"
+                                         "\n"
+                                         "}\n"
+                                         "\n"
+                                         "QDialog{\n"
+                                         "color:black;\n"
+                                         "}\n"
+                                         "\n"
+                                         "")
         self.stackedWidget.setObjectName("stackedWidget")
         self.TakePhoto1 = QtWidgets.QWidget()
         self.TakePhoto1.setObjectName("TakePhoto1")
@@ -141,20 +141,20 @@ class Ui_Home(object):
         self.pushButton_8 = QtWidgets.QPushButton(self.TakePhoto1)
         self.pushButton_8.setGeometry(QtCore.QRect(370, 540, 131, 41))
         self.pushButton_8.setStyleSheet("QPushButton{\n"
-"    \n"
-"background-color: rgb(50, 199, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}")
+                                        "    \n"
+                                        "background-color: rgb(50, 199, 255);\n"
+                                        "border-radius:15px;\n"
+                                        "font-color:white;\n"
+                                        "}")
         self.pushButton_8.setObjectName("pushButton_8")
         self.pushButton_pz = QtWidgets.QPushButton(self.TakePhoto1)
         self.pushButton_pz.setGeometry(QtCore.QRect(370, 600, 131, 41))
         self.pushButton_pz.setStyleSheet("QPushButton{\n"
-"    \n"
-"background-color: rgb(50, 199, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}")
+                                         "    \n"
+                                         "background-color: rgb(50, 199, 255);\n"
+                                         "border-radius:15px;\n"
+                                         "font-color:white;\n"
+                                         "}")
         self.pushButton_pz.setObjectName("pushButton_pz")
         self.stackedWidget.addWidget(self.TakePhoto1)
         self.TakePhoto2 = QtWidgets.QWidget()
@@ -165,11 +165,11 @@ class Ui_Home(object):
         self.pushButton_13 = QtWidgets.QPushButton(self.TakePhoto2)
         self.pushButton_13.setGeometry(QtCore.QRect(370, 650, 131, 41))
         self.pushButton_13.setStyleSheet("QPushButton{\n"
-"    \n"
-"background-color: rgb(50, 199, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}")
+                                         "    \n"
+                                         "background-color: rgb(50, 199, 255);\n"
+                                         "border-radius:15px;\n"
+                                         "font-color:white;\n"
+                                         "}")
         self.pushButton_13.setObjectName("pushButton_13")
         self.stackedWidget.addWidget(self.TakePhoto2)
         self.Modify2 = QtWidgets.QWidget()
@@ -178,61 +178,61 @@ class Ui_Home(object):
         self.frame_4 = QtWidgets.QFrame(self.Modify2)
         self.frame_4.setGeometry(QtCore.QRect(0, 0, 891, 772))
         self.frame_4.setStyleSheet("*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"    background-color: rgb(231, 231, 231);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "    background-color: rgb(231, 231, 231);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_4.setObjectName("frame_4")
         self.splitter_3 = QtWidgets.QSplitter(self.frame_4)
         self.splitter_3.setGeometry(QtCore.QRect(60, 50, 771, 681))
         self.splitter_3.setStyleSheet("QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"QSplitter{background:rgb(231, 231, 231);\n"
-"color:rgb(231, 231, 231);}")
+                                      "color: rgb(58, 55, 144);\n"
+                                      "background:rgb(255, 255, 255);\n"
+                                      "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                      "\n"
+                                      "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                      "}\n"
+                                      "QSplitter{background:rgb(231, 231, 231);\n"
+                                      "color:rgb(231, 231, 231);}")
         self.splitter_3.setOrientation(QtCore.Qt.Vertical)
         self.splitter_3.setObjectName("splitter_3")
         self.label_22 = ClickLabel.ClickLabel(self.splitter_3)
@@ -301,58 +301,58 @@ class Ui_Home(object):
         self.frame_5 = QtWidgets.QFrame(self.Apply)
         self.frame_5.setGeometry(QtCore.QRect(60, 50, 771, 681))
         self.frame_5.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                   "*{\n"
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "background:rgb(255, 255, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "background:#49ebff;\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_5.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_5.setObjectName("frame_5")
         self.label_24 = ClickLabel.ClickLabel(self.frame_5)
         self.label_24.setGeometry(QtCore.QRect(310, 70, 141, 31))
         self.label_24.setStyleSheet("\n"
-"font: 80 16pt \"Bahnschrift SemiBold\";\n"
-"font-weight: bold; \n"
-"color: rgb(56, 56, 56);")
+                                    "font: 80 16pt \"Bahnschrift SemiBold\";\n"
+                                    "font-weight: bold; \n"
+                                    "color: rgb(56, 56, 56);")
         self.label_24.setObjectName("label_24")
         self.lineEdit = QtWidgets.QLineEdit(self.frame_5)
         self.lineEdit.setGeometry(QtCore.QRect(190, 140, 371, 41))
@@ -384,61 +384,61 @@ class Ui_Home(object):
         self.frame_9 = QtWidgets.QFrame(self.Modify1)
         self.frame_9.setGeometry(QtCore.QRect(0, 0, 891, 772))
         self.frame_9.setStyleSheet("*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"    background-color: rgb(231, 231, 231);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "    background-color: rgb(231, 231, 231);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
         self.splitter_9 = QtWidgets.QSplitter(self.frame_9)
         self.splitter_9.setGeometry(QtCore.QRect(60, 50, 771, 681))
         self.splitter_9.setStyleSheet("QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"QSplitter{background:rgb(231, 231, 231);\n"
-"color:rgb(231, 231, 231);}")
+                                      "color: rgb(58, 55, 144);\n"
+                                      "background:rgb(255, 255, 255);\n"
+                                      "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                      "\n"
+                                      "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                      "}\n"
+                                      "QSplitter{background:rgb(231, 231, 231);\n"
+                                      "color:rgb(231, 231, 231);}")
         self.splitter_9.setOrientation(QtCore.Qt.Vertical)
         self.splitter_9.setObjectName("splitter_9")
         self.label_54 = ClickLabel.ClickLabel(self.splitter_9)
@@ -509,49 +509,49 @@ class Ui_Home(object):
         self.frame_10 = QtWidgets.QFrame(self.Leave)
         self.frame_10.setGeometry(QtCore.QRect(60, 50, 771, 681))
         self.frame_10.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                    "*{\n"
+                                    "font-size:24px;\n"
+                                    "font-family:Century Gothic;\n"
+                                    "\n"
+                                    "}\n"
+                                    "#Apply{ \n"
+                                    "    \n"
+                                    "}\n"
+                                    "QFrame{\n"
+                                    "    \n"
+                                    "background:rgb(255, 255, 255);\n"
+                                    "border-radius:15px;\n"
+                                    "}\n"
+                                    "\n"
+                                    "QToolButton{\n"
+                                    "background:#49ebff;\n"
+                                    "border-radius:60px;\n"
+                                    "}\n"
+                                    "QLabel{\n"
+                                    "color:white;\n"
+                                    "background:transparent;\n"
+                                    "}\n"
+                                    "QPushButton{\n"
+                                    "background:#49ebff;\n"
+                                    "    \n"
+                                    "background-color: rgb(119, 174, 255);\n"
+                                    "border-radius:15px;\n"
+                                    "font-color:white;\n"
+                                    "}\n"
+                                    "QPushButton:hover{\n"
+                                    "    background-color: rgb(106, 107, 189);\n"
+                                    "border-radius:15px;\n"
+                                    "\n"
+                                    "}\n"
+                                    "QLineEdit{\n"
+                                    "\n"
+                                    "\n"
+                                    "color:#717072;\n"
+                                    "border-bottom:1px solid #717072;\n"
+                                    "\n"
+                                    "}\n"
+                                    "\n"
+                                    "")
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_10.setObjectName("frame_10")
@@ -565,10 +565,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_14.setFont(font)
         self.label_14.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_14.setAlignment(QtCore.Qt.AlignCenter)
         self.label_14.setObjectName("label_14")
         self.dateEdit = QtWidgets.QDateEdit(self.frame_10)
@@ -593,10 +593,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_17.setFont(font)
         self.label_17.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_17.setAlignment(QtCore.Qt.AlignCenter)
         self.label_17.setObjectName("label_17")
         self.timeEdit = QtWidgets.QTimeEdit(self.frame_10)
@@ -605,7 +605,7 @@ class Ui_Home(object):
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.frame_10)
         self.plainTextEdit.setGeometry(QtCore.QRect(60, 335, 651, 241))
         self.plainTextEdit.setStyleSheet("background:rgb(231, 231, 231)\n"
-"")
+                                         "")
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.label_16 = ClickLabel.ClickLabel(self.frame_10)
         self.label_16.setGeometry(QtCore.QRect(400, 265, 141, 41))
@@ -617,10 +617,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_16.setFont(font)
         self.label_16.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_16.setAlignment(QtCore.Qt.AlignCenter)
         self.label_16.setObjectName("label_16")
         self.dateEdit_2 = QtWidgets.QDateEdit(self.frame_10)
@@ -642,10 +642,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_13.setFont(font)
         self.label_13.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_13.setAlignment(QtCore.Qt.AlignCenter)
         self.label_13.setObjectName("label_13")
         self.pushButton_9 = QtWidgets.QPushButton(self.frame_10)
@@ -678,10 +678,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_15.setFont(font)
         self.label_15.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_15.setAlignment(QtCore.Qt.AlignCenter)
         self.label_15.setObjectName("label_15")
         self.stackedWidget.addWidget(self.Leave)
@@ -690,58 +690,58 @@ class Ui_Home(object):
         self.frame_6 = QtWidgets.QFrame(self.Count)
         self.frame_6.setGeometry(QtCore.QRect(60, 50, 771, 215))
         self.frame_6.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                   "*{\n"
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "background:rgb(255, 255, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "background:#49ebff;\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_6.setObjectName("frame_6")
         self.label = ClickLabel.ClickLabel(self.frame_6)
         self.label.setGeometry(QtCore.QRect(300, 40, 181, 41))
         self.label.setStyleSheet("\n"
-"font: 80 16pt \"Bahnschrift SemiBold\";\n"
-"font-weight: bold; \n"
-"color: rgb(56, 56, 56);")
+                                 "font: 80 16pt \"Bahnschrift SemiBold\";\n"
+                                 "font-weight: bold; \n"
+                                 "color: rgb(56, 56, 56);")
         self.label.setObjectName("label")
         self.pushButton_10 = QtWidgets.QPushButton(self.frame_6)
         self.pushButton_10.setGeometry(QtCore.QRect(600, 130, 91, 41))
@@ -754,14 +754,14 @@ class Ui_Home(object):
         self.splitter = QtWidgets.QSplitter(self.Count)
         self.splitter.setGeometry(QtCore.QRect(60, 270, 771, 441))
         self.splitter.setStyleSheet("QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"QSplitter{background:rgb(231, 231, 231);\n"
-"color:rgb(231, 231, 231);}")
+                                    "color: rgb(58, 55, 144);\n"
+                                    "background:rgb(255, 255, 255);\n"
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "}\n"
+                                    "QSplitter{background:rgb(231, 231, 231);\n"
+                                    "color:rgb(231, 231, 231);}")
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName("splitter")
         self.label_26 = ClickLabel.ClickLabel(self.splitter)
@@ -773,10 +773,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_26.setFont(font)
         self.label_26.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_26.setObjectName("label_26")
         self.label_36 = ClickLabel.ClickLabel(self.splitter)
         font = QtGui.QFont()
@@ -787,10 +787,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_36.setFont(font)
         self.label_36.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_36.setObjectName("label_36")
         self.label_27 = ClickLabel.ClickLabel(self.splitter)
         font = QtGui.QFont()
@@ -801,10 +801,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_27.setFont(font)
         self.label_27.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_27.setObjectName("label_27")
         self.label_28 = ClickLabel.ClickLabel(self.splitter)
         font = QtGui.QFont()
@@ -815,10 +815,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_28.setFont(font)
         self.label_28.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_28.setObjectName("label_28")
         self.stackedWidget.addWidget(self.Count)
         self.Search = QtWidgets.QWidget()
@@ -826,58 +826,58 @@ class Ui_Home(object):
         self.frame_8 = QtWidgets.QFrame(self.Search)
         self.frame_8.setGeometry(QtCore.QRect(60, 50, 771, 215))
         self.frame_8.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                   "*{\n"
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "background:rgb(255, 255, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "background:#49ebff;\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_8.setObjectName("frame_8")
         self.label_29 = ClickLabel.ClickLabel(self.frame_8)
         self.label_29.setGeometry(QtCore.QRect(300, 40, 181, 41))
         self.label_29.setStyleSheet("\n"
-"font: 80 16pt \"Bahnschrift SemiBold\";\n"
-"font-weight: bold; \n"
-"color: rgb(56, 56, 56);")
+                                    "font: 80 16pt \"Bahnschrift SemiBold\";\n"
+                                    "font-weight: bold; \n"
+                                    "color: rgb(56, 56, 56);")
         self.label_29.setObjectName("label_29")
         self.pushButton_11 = QtWidgets.QPushButton(self.frame_8)
         self.pushButton_11.setGeometry(QtCore.QRect(600, 130, 91, 41))
@@ -888,14 +888,14 @@ class Ui_Home(object):
         self.splitter_5 = QtWidgets.QSplitter(self.Search)
         self.splitter_5.setGeometry(QtCore.QRect(60, 270, 771, 441))
         self.splitter_5.setStyleSheet("QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"QSplitter{background:rgb(231, 231, 231);\n"
-"color:rgb(231, 231, 231);}")
+                                      "color: rgb(58, 55, 144);\n"
+                                      "background:rgb(255, 255, 255);\n"
+                                      "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                      "\n"
+                                      "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                      "}\n"
+                                      "QSplitter{background:rgb(231, 231, 231);\n"
+                                      "color:rgb(231, 231, 231);}")
         self.splitter_5.setOrientation(QtCore.Qt.Vertical)
         self.splitter_5.setObjectName("splitter_5")
         self.label_30 = ClickLabel.ClickLabel(self.splitter_5)
@@ -907,10 +907,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_30.setFont(font)
         self.label_30.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_30.setObjectName("label_30")
         self.label_31 = ClickLabel.ClickLabel(self.splitter_5)
         font = QtGui.QFont()
@@ -921,10 +921,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_31.setFont(font)
         self.label_31.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_31.setObjectName("label_31")
         self.label_32 = ClickLabel.ClickLabel(self.splitter_5)
         font = QtGui.QFont()
@@ -935,10 +935,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_32.setFont(font)
         self.label_32.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_32.setObjectName("label_32")
         self.label_33 = ClickLabel.ClickLabel(self.splitter_5)
         font = QtGui.QFont()
@@ -949,10 +949,10 @@ class Ui_Home(object):
         font.setWeight(9)
         self.label_33.setFont(font)
         self.label_33.setStyleSheet("color: rgb(58, 55, 144);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"")
+                                    "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                    "\n"
+                                    "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                    "")
         self.label_33.setObjectName("label_33")
         self.stackedWidget.addWidget(self.Search)
         self.Message1 = QtWidgets.QWidget()
@@ -960,117 +960,119 @@ class Ui_Home(object):
         self.frame_7 = QtWidgets.QFrame(self.Message1)
         self.frame_7.setGeometry(QtCore.QRect(60, 50, 731, 621))
         self.frame_7.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"\n"
-"")
+                                   "*{\n"
+                                   "font-size:24px;\n"
+                                   "font-family:Century Gothic;\n"
+                                   "\n"
+                                   "}\n"
+                                   "#Apply{ \n"
+                                   "    \n"
+                                   "}\n"
+                                   "QFrame{\n"
+                                   "    \n"
+                                   "background:rgb(255, 255, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "}\n"
+                                   "\n"
+                                   "QToolButton{\n"
+                                   "background:#49ebff;\n"
+                                   "border-radius:60px;\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color:white;\n"
+                                   "background:transparent;\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "background:#49ebff;\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLineEdit{\n"
+                                   "\n"
+                                   "\n"
+                                   "color:#717072;\n"
+                                   "border-bottom:1px solid #717072;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QPushButton{\n"
+                                   "background:#49ebff;\n"
+                                   "    \n"
+                                   "background-color: rgb(119, 174, 255);\n"
+                                   "border-radius:15px;\n"
+                                   "font-color:white;\n"
+                                   "}\n"
+                                   "QPushButton:hover{\n"
+                                   "    background-color: rgb(106, 107, 189);\n"
+                                   "border-radius:15px;\n"
+                                   "\n"
+                                   "}\n"
+                                   "QLabel{\n"
+                                   "color: rgb(58, 55, 144);\n"
+                                   "background:rgb(255, 255, 255);\n"
+                                   "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                   "\n"
+                                   "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                   "}\n"
+                                   "\n"
+                                   "")
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_7.setObjectName("frame_7")
         self.label_2 = ClickLabel.ClickLabel(self.frame_7)
         self.label_2.setGeometry(QtCore.QRect(300, 40, 141, 41))
         self.label_2.setStyleSheet("\n"
-"font: 80 16pt \"Bahnschrift SemiBold\";\n"
-"font-weight: bold; \n"
-"color: rgb(56, 56, 56);")
+                                   "font: 80 16pt \"Bahnschrift SemiBold\";\n"
+                                   "font-weight: bold; \n"
+                                   "color: rgb(56, 56, 56);")
         self.label_2.setObjectName("label_2")
         self.listWidget = QtWidgets.QListWidget(self.frame_7)
         self.listWidget.setGeometry(QtCore.QRect(50, 130, 631, 431))
         self.listWidget.setStyleSheet("QListWidget\n"
-"{\n"
-"    color:rgb(200,200,200);\n"
-"    border:3px solid gray;\n"
-"    padding:20px 0px 0px 0px;\n"
-"font-weight: bold; \n"
-"}\n"
-"/**列表项*/\n"
-"QListWidget::item\n"
-"{\n"
-"    color:rgb(0,255,0);\n"
-"    height:40px;\n"
-"    padding-left:20px;\n"
-"    border:0px solid gray;\n"
-"\n"
-"}\n"
-"/**列表项扫过*/\n"
-"QListWidget::item:hover\n"
-"{\n"
-"    color:rgb(0,0,255);\n"
-"   \n"
-"}\n"
-"/**列表项选中*/\n"
-"QListWidget::item::selected:active\n"
-"{ \n"
-"    color:white;\n"
-"    border-width:0;\n"
-"}\n"
-"QListWidget::item:selected\n"
-"{\n"
-"    color:white;\n"
-"    border-width:0;\n"
-"}")
+                                      "{\n"
+                                      "    color:rgb(200,200,200);\n"
+                                      "    border:3px solid gray;\n"
+                                      "    padding:20px 0px 0px 0px;\n"
+                                      "font-weight: bold; \n"
+                                      "}\n"
+                                      "/**列表项*/\n"
+                                      "QListWidget::item\n"
+                                      "{\n"
+                                      "    color:rgb(100,100,100);\n"
+                                      "    height:40px;\n"
+                                      "    padding-left:20px;\n"
+                                      "    border:0px solid gray;\n"
+                                      "\n"
+                                      "}\n"
+                                      "/**列表项扫过*/\n"
+                                      "QListWidget::item:hover\n"
+                                      "{\n"
+                                      "    color:rgb(0,0,0);\n"
+                                      "   \n"
+                                      "}\n"
+                                      "/**列表项选中*/\n"
+                                      "QListWidget::item::selected:active\n"
+                                      "{ \n"
+                                      "    color:blue;\n"
+                                      "    border-width:0;\n"
+                                      "}\n"
+                                      "QListWidget::item:selected\n"
+                                      "{\n"
+                                      "    color:blue;\n"
+                                      "    border-width:0;\n"
+                                      "}")
         self.listWidget.setObjectName("listWidget")
         item = QtWidgets.QListWidgetItem()
+
         self.listWidget.addItem(item)
         item = QtWidgets.QListWidgetItem()
+
         font = QtGui.QFont()
         font.setBold(False)
         font.setItalic(False)
@@ -1083,49 +1085,49 @@ class Ui_Home(object):
         self.frame_11 = QtWidgets.QFrame(self.Message2)
         self.frame_11.setGeometry(QtCore.QRect(60, 355, 771, 291))
         self.frame_11.setStyleSheet("\n"
-"*{\n"
-"font-size:24px;\n"
-"font-family:Century Gothic;\n"
-"\n"
-"}\n"
-"#Apply{ \n"
-"    \n"
-"}\n"
-"QFrame{\n"
-"    \n"
-"background:rgb(255, 255, 255);\n"
-"border-radius:15px;\n"
-"}\n"
-"\n"
-"QToolButton{\n"
-"background:#49ebff;\n"
-"border-radius:60px;\n"
-"}\n"
-"QLabel{\n"
-"color:white;\n"
-"background:transparent;\n"
-"}\n"
-"QPushButton{\n"
-"background:#49ebff;\n"
-"    \n"
-"background-color: rgb(119, 174, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    background-color: rgb(106, 107, 189);\n"
-"border-radius:15px;\n"
-"\n"
-"}\n"
-"QLineEdit{\n"
-"\n"
-"\n"
-"color:#717072;\n"
-"border-bottom:1px solid #717072;\n"
-"\n"
-"}\n"
-"\n"
-"")
+                                    "*{\n"
+                                    "font-size:24px;\n"
+                                    "font-family:Century Gothic;\n"
+                                    "\n"
+                                    "}\n"
+                                    "#Apply{ \n"
+                                    "    \n"
+                                    "}\n"
+                                    "QFrame{\n"
+                                    "    \n"
+                                    "background:rgb(255, 255, 255);\n"
+                                    "border-radius:15px;\n"
+                                    "}\n"
+                                    "\n"
+                                    "QToolButton{\n"
+                                    "background:#49ebff;\n"
+                                    "border-radius:60px;\n"
+                                    "}\n"
+                                    "QLabel{\n"
+                                    "color:white;\n"
+                                    "background:transparent;\n"
+                                    "}\n"
+                                    "QPushButton{\n"
+                                    "background:#49ebff;\n"
+                                    "    \n"
+                                    "background-color: rgb(119, 174, 255);\n"
+                                    "border-radius:15px;\n"
+                                    "font-color:white;\n"
+                                    "}\n"
+                                    "QPushButton:hover{\n"
+                                    "    background-color: rgb(106, 107, 189);\n"
+                                    "border-radius:15px;\n"
+                                    "\n"
+                                    "}\n"
+                                    "QLineEdit{\n"
+                                    "\n"
+                                    "\n"
+                                    "color:#717072;\n"
+                                    "border-bottom:1px solid #717072;\n"
+                                    "\n"
+                                    "}\n"
+                                    "\n"
+                                    "")
         self.frame_11.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_11.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_11.setObjectName("frame_11")
@@ -1146,14 +1148,14 @@ class Ui_Home(object):
         self.splitter_8 = QtWidgets.QSplitter(self.Message2)
         self.splitter_8.setGeometry(QtCore.QRect(60, 50, 771, 300))
         self.splitter_8.setStyleSheet("QLabel{\n"
-"color: rgb(58, 55, 144);\n"
-"background:rgb(255, 255, 255);\n"
-"selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
-"\n"
-"font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
-"}\n"
-"QSplitter{background:rgb(231, 231, 231);\n"
-"color:rgb(231, 231, 231);}")
+                                      "color: rgb(58, 55, 144);\n"
+                                      "background:rgb(255, 255, 255);\n"
+                                      "selection-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));\n"
+                                      "\n"
+                                      "font: 75 16pt \"Adobe Garamond Pro Bold\";\n"
+                                      "}\n"
+                                      "QSplitter{background:rgb(231, 231, 231);\n"
+                                      "color:rgb(231, 231, 231);}")
         self.splitter_8.setOrientation(QtCore.Qt.Vertical)
         self.splitter_8.setObjectName("splitter_8")
         self.label_48 = ClickLabel.ClickLabel(self.splitter_8)
@@ -1189,12 +1191,17 @@ class Ui_Home(object):
         self.pushButton_14 = QtWidgets.QPushButton(self.Message2)
         self.pushButton_14.setGeometry(QtCore.QRect(370, 670, 131, 41))
         self.pushButton_14.setStyleSheet("QPushButton{\n"
-"    \n"
-"background-color: rgb(50, 199, 255);\n"
-"border-radius:15px;\n"
-"font-color:white;\n"
-"}")
+                                         "    \n"
+                                         "background-color: rgb(50, 199, 255);\n"
+                                         "border-radius:15px;\n"
+                                         "font-color:white;\n"
+                                         "}")
         self.pushButton_14.setObjectName("pushButton_14")
+
+        self.checkBox = QtWidgets.QCheckBox(self.Message2)
+        self.checkBox.setGeometry(QtCore.QRect(120, 670, 131, 41))
+        self.checkBox.setObjectName("checkBox")
+
         self.stackedWidget.addWidget(self.Message2)
 
         self.timer = QTimer()
@@ -1260,6 +1267,7 @@ class Ui_Home(object):
         self.label_49.setText(_translate("Form", "发送时间"))
         self.label_53.setText(_translate("Form", "发送人"))
         self.pushButton_14.setText(_translate("Form", "返 回"))
+        self.checkBox.setText("同意加入")
         self.pushButton.clicked.connect(lambda: self.onPushButtonClick())
         self.pushButton_2.clicked.connect(lambda: self.onPushButton_2Click())
         self.pushButton_3.clicked.connect(lambda: self.onPushButton_3Click())
@@ -1268,11 +1276,11 @@ class Ui_Home(object):
         # self.pushButton_8.clicked.connect(lambda: self.start())
         self.pushButton_13.clicked.connect(lambda: self.onPushButton_13Click())
         self.pushButton_9.clicked.connect(lambda: self.onPushButton_9Click())
-        #统计
+        # 统计
         self.pushButton_10.clicked.connect(lambda: self.onPushButton_10Click())
-        #申请加入组织
+        # 申请加入组织
         self.pushButton_6.clicked.connect(lambda: self.onPushButton_6Click())
-
+        self.pushButton_14.clicked.connect(lambda :self.onPushButton_14Click())
 
         self.label_59.clicked.connect(lambda: self.onLabel_59Click())
         self.label_25.clicked.connect(lambda: self.onLabel_25Click())
@@ -1287,6 +1295,8 @@ class Ui_Home(object):
         self.label_57.clicked.connect(lambda: self.onLabel_9Click())
         # self.label_showcam.clicked.connect(self.start)
         self.pushButton_8.clicked.connect(self.start)
+        self.listWidget.itemClicked.connect(lambda :self.onItemClick())
+        self.listWidget.itemDoubleClicked.connect(lambda :self.onItemDoubleClick(0))
 
     def start(self, event):
         self.capTime = 0
@@ -1299,7 +1309,6 @@ class Ui_Home(object):
         self.cap.release()
         self.jumpToTakePhoto2()
         self.label_showcam.setPixmap(QPixmap("resources/camera.jpg"));
-        self.solvePicture()
 
         # self.timer.stop()  # 停止计时
         # show = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
@@ -1323,7 +1332,7 @@ class Ui_Home(object):
                 QPixmap.fromImage(self.image).scaled(self.label_showcam.width(), self.label_showcam.height()))
             self.pushButton_pz.clicked.connect(self.shibie)
 
-    def judgeTodayFirst(self,file_name):
+    def judgeTodayFirst(self, file_name):
         # 如果是昨天或以前修改或者文件为空表示今天第一次修改
         file_times_access = time.localtime(os.path.getatime(file_name))
         year_access = file_times_access.tm_year
@@ -1348,7 +1357,7 @@ class Ui_Home(object):
         tim_now = datetime.now()
         s = tim_now.strftime('%Y-%m-%d %H:%M:%S')
         s_hour = int(tim_now.strftime('%H'))
-        if s_hour<=6 or s_hour>=18 or (s_hour>=12 and s_hour<13):
+        if s_hour <= 6 or s_hour >= 18 or (s_hour >= 12 and s_hour < 13):
             self.hasShow = not self.hasShow
             if self.hasShow == False:
                 err = QtWidgets.QErrorMessage(self.frame)
@@ -1358,7 +1367,7 @@ class Ui_Home(object):
 
         arr.append(s)
 
-        if s_hour<12: #上午
+        if s_hour < 12:  # 上午
             self.stage1.check(s_hour)
             self.stage1.judgeThree1(s_hour)
             arr.append(str(self.stage1.isLate))
@@ -1370,7 +1379,7 @@ class Ui_Home(object):
             else:
                 arr.append("2")
                 arr.append(False)
-        else:       #下午
+        else:  # 下午
 
             self.stage2.check(s_hour)
             self.stage2.judgeThree1(s_hour)
@@ -1386,7 +1395,6 @@ class Ui_Home(object):
             else:
                 arr.append("4")
                 arr.append(False)
-
 
         res = Connect.sendJSON("/check", SendJSON.getCheckJSON(arr))
         if res["msg"] == "ok":
@@ -1413,12 +1421,12 @@ class Ui_Home(object):
         self.jumpToHome()
 
     def onPushButton_2Click(self):
-        res = Connect.sendJSON("/info",{})
-        self.label_22.setText( "UID:          "+  res["uid"])
+        res = Connect.sendJSON("/info", {})
+        self.label_22.setText("UID:          " + res["uid"])
         self.label_55.setText("昵称:          " + res["name"])
         self.label_56.setText("性别:          " + res["sex"])
         self.label_57.setText("生日:          " + res["birth"])
-        s = self.label_57.text()[13:len(self.label_57.text())].replace("-","")
+        s = self.label_57.text()[13:len(self.label_57.text())].replace("-", "")
         print(s)
         self.setAge(s)
         self.jumpToModify1()
@@ -1428,41 +1436,75 @@ class Ui_Home(object):
 
     def onPushButton_4Click(self):
         self.listWidget.clear()
-        res = Connect.sendJSON("/messages",{})
+        res = Connect.sendJSON("/messages", {})
         arr = Message.getApplyMessage(res["apply"])
         arr.extend(Message.getInviteMessage(res["invite"]))
         arr.extend(Message.getNormalMessage(res["msg"]))
         print(arr)
         arr = Message.sortMessages(arr)
-        for o in arr:
-            s1 = ""
-            s2 = "<"+o.time+">"
-            if o.hasRead == 1:
-                s1 = "<未读>"
-            else:
-                s1 = "<已读>"
-            if str(o.__class__)=='<class \'src.Message.ApplyMessage\'>':
-                item=QtWidgets.QListWidgetItem()
-                item.setText(str(self.listWidget.count())+"    "+s1+s2+"加入"+o.cname+"的申请")
-                self.listWidget.addItem(item)
-            elif str(o.__class__)=='<class \'src.Message.InviteMessage\'>':
+        for i in range(len(arr)):
+            s2 = "<" + arr[i].time + ">"
+            if(len(self.typeStack)<len(arr)):
+                self.typeStack.append("")
+            if (len(self.midStack) < len(arr)):
+                self.midStack.append("")
+            self.midStack[i] = arr[i].mid
+            if str(arr[i].__class__) == '<class \'src.Message.ApplyMessage\'>':
                 item = QtWidgets.QListWidgetItem()
-                item.setText(str(self.listWidget.count()) + "    " + s1 + s2 + "加入" + o.cname+"的邀请")
+                item.setText(str(self.listWidget.count()) + "    " + "加入" + arr[i].cname + "的申请   " + s2)
                 self.listWidget.addItem(item)
-            elif str(o.__class__)=='<class \'src.Message.NormalMessage\'>':
+                self.typeStack[i]="2"
+            elif str(arr[i].__class__) == '<class \'src.Message.InviteMessage\'>':
                 item = QtWidgets.QListWidgetItem()
-                item.setText(str(self.listWidget.count()) + "    " + s1 + s2 + o.content)
+                item.setText(str(self.listWidget.count()) + "    " + "加入" + arr[i].cname + "的邀请   " + s2)
                 self.listWidget.addItem(item)
+                self.typeStack[i]="3"
+
+            elif str(arr[i].__class__) == '<class \'src.Message.NormalMessage\'>':
+                item = QtWidgets.QListWidgetItem()
+                item.setText(str(self.listWidget.count()) + "    " + arr[i].content + "    " + s2)
+                self.listWidget.addItem(item)
+                self.typeStack[i]="1"
         self.jumpToMessage1()
+
+    def onItemDoubleClick(self,s):
+        index = self.listWidget.currentRow()
+        type=self.typeStack[index]
+        mid = self.midStack[index]
+        self.hasShow = not self.hasShow
+        if self.hasShow == False:
+            if s==0:
+                s1="是否不再显示此消息!"
+                s2=3
+            else:
+                s1="是否同意加入该公司"
+                s2=2
+            reply = QMessageBox.information \
+                (self.frame, "Question", s1, QMessageBox.Yes | QMessageBox.No)
+            if reply==QMessageBox.Yes:
+                arr = []
+                arr.append(mid)
+                arr.append(type)
+                arr.append(s2)
+                res = Connect.sendJSON("/read", {"id": mid})
+                if res["msg"] == "ok":
+                    self.onPushButton_4Click()
+
+    def onItemClick(self):
+        print(self.listWidget.currentRow())
+        print(self.typeStack)
+        print(self.midStack)
+        if self.typeStack[self.listWidget.currentRow()]=="2":
+            self.jumpToMessage2()
 
     def onPushButton_5Click(self):
         self.jumpToLeave()
 
     def onPushButton_6Click(self):
-        arr=[]
+        arr = []
         arr.append(self.lineEdit_2.text())
         arr.append(self.lineEdit_4.text())
-        Connect.sendJSON("/addCompany",SendJSON.getAddCompanyJSON(arr))
+        Connect.sendJSON("/addCompany", SendJSON.getAddCompanyJSON(arr))
 
     def onPushButton_9Click(self):
         arr = []
@@ -1484,14 +1526,12 @@ class Ui_Home(object):
                 err.setStyleSheet("color:green;background:white;")
                 err.showMessage("发送成功！")
 
-
-
     def onPushButton_10Click(self):
-        arr=[]
+        arr = []
         arr.append(self.dateEdit_3.text())
-        res = Connect.sendJSON("/attend",SendJSON.getAttendJSON(arr))
+        res = Connect.sendJSON("/attend", SendJSON.getAttendJSON(arr))
         if res["msg"] == "ok":
-            return  #待完善
+            return  # 待完善
         else:
             self.hasShow = not self.hasShow
             if self.hasShow == False:
@@ -1499,9 +1539,14 @@ class Ui_Home(object):
                 err.setStyleSheet("color:red;background:white;")
                 err.showMessage("查询失败！")
 
-
     def onPushButton_13Click(self):
         self.jumpToHome()
+
+    def onPushButton_14Click(self):
+        if self.checkBox.isChecked():
+            self.onItemDoubleClick(1)
+        self.jumpToMessage1()
+
 
     def onLabel_59Click(self):
         self.jumpToModify2()
@@ -1549,7 +1594,7 @@ class Ui_Home(object):
             arr.append("")
             arr.append("")
             arr.append(self.label_57.text()[13:len(self.label_57.text())])
-            res =  Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr))
+            res = Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr))
             if res["msg"] != "ok":
                 self.label_57.setText("生日")
                 self.label_58.setText("年龄")
@@ -1616,8 +1661,8 @@ class Ui_Home(object):
 
         return age
 
-    def setAge(self,born):
-        if born==None:
+    def setAge(self, born):
+        if born == None:
             born = self.birthDialog()
         if born != None:
             age = self.calculate_age(born)

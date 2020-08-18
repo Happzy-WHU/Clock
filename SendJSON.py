@@ -91,3 +91,14 @@ def getRegisterJSON(arr):
     s["email"] = arr[2]
     return s
 
+def getMessageJSON(arr):
+    s = {
+        "id": None,
+        "type": None,
+        "proc": None
+    }
+
+    s["id"] = arr[0]
+    s["type"] = arr[1]
+    s["proc"] = arr[2]
+    return s

@@ -86,7 +86,10 @@ def f8():
     ]
 }
 
-
+@app.route('/v1/read',methods=["post","get"])
+def f9():
+    print(request.get_json())
+    return {"msg":"ok"}
 # @app.route('/v1/info',methods=["post","get"])
 # def f7():
 #     print(request.get_json())

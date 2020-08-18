@@ -7,9 +7,11 @@ class ApplyMessage:
         self.status = mes["process"]
         #cname空着
         self.cname = mes["cname"]
+        self.mid=mes["id"]
 
     time=""
     hasRead=0
+    mid=0
 
     cname=""
     status=0
@@ -20,12 +22,16 @@ class InviteMessage:
         self.cid = mes["cid"]
         self.hasRead = mes["read"]
         self.cname = mes["cname"]
+        self.mid=mes["id"]
+
 
     time = ""
     hasRead = 0
+    mid=0
 
     cid=""
     cname=""
+    status=0
     content="   我们公司正在招聘人才欢迎你加入我们公司！"
 
 class NormalMessage:
@@ -33,8 +39,11 @@ class NormalMessage:
         self.time = mes["sendtime"]
         self.hasRead = mes["read"]
         self.content = mes["postmessage"]
+        self.mid=mes["id"]
+
     time = ""
     hasRead = 0
+    mid=0
 
     content=""
 
