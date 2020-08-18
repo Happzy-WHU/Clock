@@ -6,6 +6,15 @@ class stage:
     isEarly=True
     isAbsent=True
 
+    def writeToFile(self,filename,isTodayFirst):
+        if isTodayFirst:
+            s="w"
+        else:
+            s="a"
+        with open(filename, mode=s) as f:
+            f.write(self.timeStack[len(self.timeStack)-1] + "\n")
+
+
     def check(self,t_hour):
         self.timeStack.append(t_hour)
 

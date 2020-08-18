@@ -26,6 +26,8 @@ class Ui_Home(object):
     stage2 = Stage.stage()
     typeStack=[]
     midStack=[]
+    pressCount=0
+    processCount=0
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -1299,22 +1301,10 @@ class Ui_Home(object):
         self.listWidget.itemDoubleClicked.connect(lambda :self.onItemDoubleClick(0))
 
     def start(self, event):
+        self.pressCount+=1
         self.capTime = 0
         self.cap = cv2.VideoCapture(0)
         self.timer.timeout.connect(self.capPicture)
-
-    def shibie(self):
-        pixmap = QPixmap("1.png")  # 按指定路径找到图片
-        self.label_show.setPixmap(pixmap)
-        self.cap.release()
-        self.jumpToTakePhoto2()
-        self.label_showcam.setPixmap(QPixmap("resources/camera.jpg"));
-
-        # self.timer.stop()  # 停止计时
-        # show = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-        # showImage = QtGui.QImage(show.data, show.shape[1], show.shape[0], QtGui.QImage.Format_RGB888)
-        # self.label_show.setPixmap(QtGui.QPixmap.fromImage(showImage))
-        # self.label_show.setScaledContents(True)
 
     def capPicture(self):
         if (self.hasRun == False):
@@ -1331,6 +1321,17 @@ class Ui_Home(object):
             self.label_showcam.setPixmap(
                 QPixmap.fromImage(self.image).scaled(self.label_showcam.width(), self.label_showcam.height()))
             self.pushButton_pz.clicked.connect(self.shibie)
+
+    def shibie(self):
+        pixmap = QPixmap("1.png")  # 按指定路径找到图片
+        self.label_show.setPixmap(pixmap)
+        self.cap.release()
+        self.jumpToTakePhoto2()
+        self.label_showcam.setPixmap(QPixmap("resources/camera.jpg"));
+        if self.processCount<self.pressCount:
+            self.solvePicture()
+            self.processCount +=1
+
 
     def judgeTodayFirst(self, file_name):
         # 如果是昨天或以前修改或者文件为空表示今天第一次修改
@@ -1358,11 +1359,10 @@ class Ui_Home(object):
         s = tim_now.strftime('%Y-%m-%d %H:%M:%S')
         s_hour = int(tim_now.strftime('%H'))
         if s_hour <= 6 or s_hour >= 18 or (s_hour >= 12 and s_hour < 13):
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:red;background:white;")
-                err.showMessage("不在打卡时间内！")
+            self.hasShow=not self.hasShow
+            if self.hasShow==False:
+                reply = QMessageBox.information \
+                    (self.frame, "Error", "不在打卡时间！", QMessageBox.Yes | QMessageBox.No)
             return
 
         arr.append(s)
@@ -1376,9 +1376,11 @@ class Ui_Home(object):
             if self.judgeTodayFirst("1"):
                 arr.append("1")
                 arr.append(True)
+                self.stage1.writeToFile("1",True)
             else:
                 arr.append("2")
                 arr.append(False)
+                self.stage1.writeToFile("1",False)
         else:  # 下午
 
             self.stage2.check(s_hour)
@@ -1387,12 +1389,14 @@ class Ui_Home(object):
             arr.append(str(self.stage2.isEarly))
             arr.append(str(self.stage2.isAbsent))
             if self.judgeTodayFirst("2"):
+                self.stage1.writeToFile("2",True)
                 arr.append("3")
                 if True == self.judgeTodayFirst("1"):
                     arr.append(True)
                 else:
                     arr.append(False)
             else:
+                self.stage1.writeToFile("2",False)
                 arr.append("4")
                 arr.append(False)
 
