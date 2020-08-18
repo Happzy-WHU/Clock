@@ -46,6 +46,47 @@ def f7():
     print(request.get_json())
     return {"uid":"3232","name":"zs","sex":"男","birth":"2000-05-16"}
 
+@app.route('/v1/messages',methods=["post","get"])
+def f8():
+    print(request.get_json())
+    return {
+    "apply": [
+        {
+            "applytime": "2020-08-17 00:00:00",
+            "cid": 1,
+            "id": 1,
+            "process": 1,
+            "read": 1,
+            "uid": 2,
+            "cname":"武汉大学"
+        }
+    ],
+    "invite": [
+        {
+            "aemail": "ss",
+            "cid": 1,
+            "cname": "武汉大学",
+            "id": 1,
+            "invitetime": "2020-08-12 00:00:00",
+            "process": 1,
+            "read": 1,
+            "uemail": "4"
+        }
+    ],
+    "msg": [
+        {
+            "id": 1,
+            "postmessage": "123",
+            "process": 1,
+            "read": 1,
+            "sendtime": "2020-07-07 00:00:00",
+            "touid": 2,
+            "type": "1"
+        }
+    ]
+}
+
+
 # @app.route('/v1/info',methods=["post","get"])
 # def f7():
 #     print(request.get_json())

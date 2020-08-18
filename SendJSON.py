@@ -25,7 +25,9 @@ def getCheckJSON(arr):
         "time":None,
         "isLate": None,
         "isEarly": None,
-        "isAbsent": None
+        "isAbsent": None,
+        "stage":None,
+        "isFirst":None
     }
 
     s["picture"] = arr[0]
@@ -33,6 +35,8 @@ def getCheckJSON(arr):
     s["isLate"] = arr[2]
     s["isEarly"] = arr[3]
     s["isAbsent"] = arr[4]
+    s["stage"]=arr[5]
+    s["isFirst"]=arr[6]
 
     return s
 

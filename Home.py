@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import ClickLabel,resources,SendJSON,Connect,Stage
+from src import ClickLabel,resources,SendJSON,Connect,Stage,Message
 import time
 from datetime import datetime
 import cv2
@@ -22,7 +22,7 @@ class Ui_Home(object):
     UIStack = None
     hasRun = False
     hasShow = True
-    hasCap = 0
+    capTime = 0
     stage1 = Stage.stage()
     stage2 = Stage.stage()
 
@@ -1256,7 +1256,7 @@ class Ui_Home(object):
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.plainTextEdit_2.setPlainText(_translate("Form", "消息内容："))
         self.pushButton_12.setText(_translate("Form", "提 交"))
-        self.label_48.setText(_translate("Form", "UID"))
+        self.label_48.setText(_translate("Form", "CID"))
         self.label_49.setText(_translate("Form", "发送时间"))
         self.label_53.setText(_translate("Form", "发送人"))
         self.pushButton_14.setText(_translate("Form", "返 回"))
@@ -1289,6 +1289,7 @@ class Ui_Home(object):
         self.pushButton_8.clicked.connect(self.start)
 
     def start(self, event):
+        self.capTime = 0
         self.cap = cv2.VideoCapture(0)
         self.timer.timeout.connect(self.capPicture)
 
@@ -1320,18 +1321,33 @@ class Ui_Home(object):
             self.image = QImage(img.data, width, height, bytesPerLine, QImage.Format_RGB888)
             self.label_showcam.setPixmap(
                 QPixmap.fromImage(self.image).scaled(self.label_showcam.width(), self.label_showcam.height()))
-
             self.pushButton_pz.clicked.connect(self.shibie)
+
+    def judgeTodayFirst(self,file_name):
+        # 如果是昨天或以前修改或者文件为空表示今天第一次修改
+        file_times_access = time.localtime(os.path.getatime(file_name))
+        year_access = file_times_access.tm_year
+        month_access = file_times_access.tm_mon
+        day_access = file_times_access.tm_mday
+        print(datetime.now().year.__class__)
+        if datetime.now().year > year_access:
+            return True
+        if datetime.now().month > month_access:
+            return True
+        if datetime.now().day > day_access:
+            return True
+        if os.path.getsize(file_name) == 0:
+            return True
+        return False
 
     def solvePicture(self):
         with open('1.png', 'rb') as f:
             img = base64.b64encode(f.read()).decode()
-
         arr = []
         arr.append(img)
         tim_now = datetime.now()
         s = tim_now.strftime('%Y-%m-%d %H:%M:%S')
-        s_hour = tim_now.strftime('%H')
+        s_hour = int(tim_now.strftime('%H'))
         if s_hour<=6 or s_hour>=18 or (s_hour>=12 and s_hour<13):
             self.hasShow = not self.hasShow
             if self.hasShow == False:
@@ -1348,29 +1364,45 @@ class Ui_Home(object):
             arr.append(str(self.stage1.isLate))
             arr.append(str(self.stage1.isEarly))
             arr.append(str(self.stage1.isAbsent))
-
+            if self.judgeTodayFirst("1"):
+                arr.append("1")
+                arr.append(True)
+            else:
+                arr.append("2")
+                arr.append(False)
         else:       #下午
+
             self.stage2.check(s_hour)
             self.stage2.judgeThree1(s_hour)
             arr.append(str(self.stage2.isLate))
             arr.append(str(self.stage2.isEarly))
             arr.append(str(self.stage2.isAbsent))
+            if self.judgeTodayFirst("2"):
+                arr.append("3")
+                if True == self.judgeTodayFirst("1"):
+                    arr.append(True)
+                else:
+                    arr.append(False)
+            else:
+                arr.append("4")
+                arr.append(False)
+
+
         res = Connect.sendJSON("/check", SendJSON.getCheckJSON(arr))
         if res["msg"] == "ok":
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
+            if self.capTime == 0:
                 err = QtWidgets.QErrorMessage(self.frame)
                 err.setStyleSheet("color:green;background:white;")
                 err.showMessage("打卡成功！")
-
+                self.capTime = 1
                 self.jumpToHome()
 
         else:
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
+            if self.capTime == 0:
                 err = QtWidgets.QErrorMessage(self.frame)
                 err.setStyleSheet("color:red;background:white;")
                 err.showMessage("打卡失败！")
+                self.capTime = 1
 
             #
         # self.label_54.clicked.connect(lambda: self.onLabel_4Click()) #待实现
@@ -1395,7 +1427,32 @@ class Ui_Home(object):
         self.jumpToCount()
 
     def onPushButton_4Click(self):
+        self.listWidget.clear()
         res = Connect.sendJSON("/messages",{})
+        arr = Message.getApplyMessage(res["apply"])
+        arr.extend(Message.getInviteMessage(res["invite"]))
+        arr.extend(Message.getNormalMessage(res["msg"]))
+        print(arr)
+        arr = Message.sortMessages(arr)
+        for o in arr:
+            s1 = ""
+            s2 = "<"+o.time+">"
+            if o.hasRead == 1:
+                s1 = "<未读>"
+            else:
+                s1 = "<已读>"
+            if str(o.__class__)=='<class \'src.Message.ApplyMessage\'>':
+                item=QtWidgets.QListWidgetItem()
+                item.setText(str(self.listWidget.count())+"    "+s1+s2+"加入"+o.cname+"的申请")
+                self.listWidget.addItem(item)
+            elif str(o.__class__)=='<class \'src.Message.InviteMessage\'>':
+                item = QtWidgets.QListWidgetItem()
+                item.setText(str(self.listWidget.count()) + "    " + s1 + s2 + "加入" + o.cname+"的邀请")
+                self.listWidget.addItem(item)
+            elif str(o.__class__)=='<class \'src.Message.NormalMessage\'>':
+                item = QtWidgets.QListWidgetItem()
+                item.setText(str(self.listWidget.count()) + "    " + s1 + s2 + o.content)
+                self.listWidget.addItem(item)
         self.jumpToMessage1()
 
     def onPushButton_5Click(self):
