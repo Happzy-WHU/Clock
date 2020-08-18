@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import resources,ClickLabel
+from src import resources,ClickLabel,Connect
 
 
 
@@ -148,6 +148,7 @@ class Ui_Login(QtWidgets.QWidget):
         self.jumpToHome()
 
     def onLabel_2Click(self):
+
         self.jumpToRegister()
 
     def onLabel_3Click(self):
@@ -173,6 +174,7 @@ class Ui_Login(QtWidgets.QWidget):
         self.WidgetStack[3].show()
 
     def jumpToHome(self):
+        
         hasFind = False
         import src.Home
         self.WidgetStack[1].hide()

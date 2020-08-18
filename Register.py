@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 # from src import Login
-from src import resources
+from src import resources,Connect,SendJSON
 
 class Ui_Register(object):
     def __init__(self, WidgetStack, UIStack):
@@ -17,6 +17,9 @@ class Ui_Register(object):
 
     WidgetStack = None
     UIStack = None
+
+    hasShow = True
+
 
     
 
@@ -58,7 +61,11 @@ class Ui_Register(object):
 "border:none;\n"
 "color:#717072;\n"
 "border-bottom:1px solid #717072;\n"
-"}")
+"}"
+"QErrorMessage{\n"
+"color:red;\n"
+"}\n"
+                           )
         self.frame = QtWidgets.QFrame(Form)
         self.frame.setGeometry(QtCore.QRect(240, 120, 491, 521))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -104,12 +111,33 @@ class Ui_Register(object):
         self.label.setText(_translate("Form", "请输入个人信息"))
         self.lineEdit_2.setText(_translate("Form", "Password"))
         self.lineEdit_2.setPlaceholderText(_translate("Form", "Password"))
-        self.lineEdit_6.setPlaceholderText(_translate("Form", "Phone Number"))
+        self.lineEdit_6.setPlaceholderText(_translate("Form", "Email Address"))
         self.pushButton.setText(_translate("Form", "注 册"))
         self.pushButton_2.setText(_translate("Form", "返 回"))
 
         self.pushButton_2.clicked.connect(lambda: self.onPushButton_2Click())
+        self.pushButton.clicked.connect(lambda :self.onPushButton_Click())
         #self.pushButton_2.clicked.connect(lambda: self.onPushButtonClick()) #注册接口
+
+    def onPushButton_Click(self):
+        arr=[]
+        arr.append(self.lineEdit.text())
+        arr.append(self.lineEdit_2.text())
+        arr.append(self.lineEdit_6.text())
+        s = Connect.sendJSON("/register",SendJSON.getRegisterJSON(arr))
+        if s=="0":
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:red;background:white;")
+                err.showMessage("用户名或手机已被占用！")
+        else:
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:green;background:white;")
+                err.showMessage("注册成功！")
+
 
     def onPushButton_2Click(self):
         self.jumpToLogin()

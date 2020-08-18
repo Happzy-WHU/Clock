@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import ClickLabel,resources,SendJSON,Connect
+from src import ClickLabel,resources,SendJSON,Connect,Stage
 import time
 from datetime import datetime
 import cv2
@@ -23,8 +23,10 @@ class Ui_Home(object):
     hasRun = False
     hasShow = True
     hasCap = 0
-    hasCheck =False
-    onOrOffDuty = ["上班打卡","下班打卡"]
+    stage1 = Stage.stage()
+    stage2 = Stage.stage()
+
+
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1013, 772)
@@ -101,7 +103,7 @@ class Ui_Home(object):
 "border-radius:60px;\n"
 "}\n"
 "QLabel{\n"
-"color:white;\n"
+"color:black;\n"
 "background:rgb(231, 231, 231);\n"
 "}\n"
 "QPushButton{\n"
@@ -499,7 +501,7 @@ class Ui_Home(object):
         self.label_59.setFont(font)
         self.label_59.setStyleSheet("")
         self.label_59.setObjectName("label_59")
-        
+
         self.stackedWidget.addWidget(self.Modify1)
         self.Leave = QtWidgets.QWidget()
         self.Leave.setStyleSheet("color:0x000000")
@@ -576,6 +578,8 @@ class Ui_Home(object):
         font.setPointSize(-1)
         self.dateEdit.setFont(font)
         self.dateEdit.setObjectName("dateEdit")
+        self.dateEdit.setDate(QtCore.QDate.currentDate())
+        self.dateEdit.setDisplayFormat("yyyy-MM-dd")
         self.timeEdit_2 = QtWidgets.QTimeEdit(self.frame_10)
         self.timeEdit_2.setGeometry(QtCore.QRect(550, 270, 161, 31))
         self.timeEdit_2.setObjectName("timeEdit_2")
@@ -626,6 +630,8 @@ class Ui_Home(object):
         font.setPointSize(-1)
         self.dateEdit_2.setFont(font)
         self.dateEdit_2.setObjectName("dateEdit_2")
+        self.dateEdit_2.setDate(QtCore.QDate.currentDate())
+        self.dateEdit_2.setDisplayFormat("yyyy-MM-dd")
         self.label_13 = ClickLabel.ClickLabel(self.frame_10)
         self.label_13.setGeometry(QtCore.QRect(60, 25, 141, 41))
         font = QtGui.QFont()
@@ -743,6 +749,8 @@ class Ui_Home(object):
         self.dateEdit_3 = QtWidgets.QDateEdit(self.frame_6)
         self.dateEdit_3.setGeometry(QtCore.QRect(90, 130, 461, 41))
         self.dateEdit_3.setObjectName("dateEdit_3")
+        self.dateEdit_3.setDate(QtCore.QDate.currentDate())
+        self.dateEdit_3.setDisplayFormat("yyyy-MM")
         self.splitter = QtWidgets.QSplitter(self.Count)
         self.splitter.setGeometry(QtCore.QRect(60, 270, 771, 441))
         self.splitter.setStyleSheet("QLabel{\n"
@@ -1199,21 +1207,21 @@ class Ui_Home(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "智慧考勤"))
-        self.pushButton_8.setText(_translate("Form", "上班打卡"))
+        self.pushButton_8.setText(_translate("Form", "打 卡"))
         self.pushButton_pz.setText(_translate("Form", "识 别"))
         self.pushButton_13.setText(_translate("Form", "返 回"))
         self.label_22.setText(_translate("Form", "UID"))
         self.label_23.setText(_translate("Form", "手机号"))
         self.label_21.setText(_translate("Form", "修改密码"))
-        self.label_25.setText(_translate("Form", "加入公司"))
+        self.label_25.setText(_translate("Form", "加入组织"))
         self.label_34.setText(_translate("Form", "注销登陆"))
         self.label_35.setText(_translate("Form", "返回"))
-        self.label_24.setText(_translate("Form", "公 司 申 请"))
+        self.label_24.setText(_translate("Form", "组 织 申 请"))
         self.lineEdit.setPlaceholderText(_translate("Form", "申请人姓名"))
-        self.lineEdit_2.setPlaceholderText(_translate("Form", "公司编号"))
+        self.lineEdit_2.setPlaceholderText(_translate("Form", "组织编号"))
         self.pushButton_6.setText(_translate("Form", "提 交"))
         self.lineEdit_3.setPlaceholderText(_translate("Form", "申请人编号"))
-        self.lineEdit_4.setPlaceholderText(_translate("Form", "公司名称"))
+        self.lineEdit_4.setPlaceholderText(_translate("Form", "组织名称"))
         self.label_54.setText(_translate("Form", "头像"))
         self.label_55.setText(_translate("Form", "昵称"))
         self.label_56.setText(_translate("Form", "性别"))
@@ -1260,6 +1268,11 @@ class Ui_Home(object):
         # self.pushButton_8.clicked.connect(lambda: self.start())
         self.pushButton_13.clicked.connect(lambda: self.onPushButton_13Click())
         self.pushButton_9.clicked.connect(lambda: self.onPushButton_9Click())
+        #统计
+        self.pushButton_10.clicked.connect(lambda: self.onPushButton_10Click())
+        #申请加入组织
+        self.pushButton_6.clicked.connect(lambda: self.onPushButton_6Click())
+
 
         self.label_59.clicked.connect(lambda: self.onLabel_59Click())
         self.label_25.clicked.connect(lambda: self.onLabel_25Click())
@@ -1316,24 +1329,48 @@ class Ui_Home(object):
 
         arr = []
         arr.append(img)
-        tim = datetime.now()
-        s = tim.strftime('%Y-%m-%d %H:%M:%S')
+        tim_now = datetime.now()
+        s = tim_now.strftime('%Y-%m-%d %H:%M:%S')
+        s_hour = tim_now.strftime('%H')
+        if s_hour<=6 or s_hour>=18 or (s_hour>=12 and s_hour<13):
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:red;background:white;")
+                err.showMessage("不在打卡时间内！")
+            return
+
         arr.append(s)
-        if "1" == Connect.sendJSON("/check", SendJSON.getCheckJSON(arr)):
-            self.hasCheck = True
-            err = QtWidgets.QErrorMessage(self.frame)
-            err.setStyleSheet("color:green;background:white;")
-            err.showMessage("打卡成功！")
-            if self.onOrOffDuty[0] == self.pushButton_8.text():
-                self.pushButton_8.setText(self.onOrOffDuty[1])
-            else:
-                self.pushButton_8.setText(self.onOrOffDuty[0])
-            self.jumpToHome()
+
+        if s_hour<12: #上午
+            self.stage1.check(s_hour)
+            self.stage1.judgeThree1(s_hour)
+            arr.append(str(self.stage1.isLate))
+            arr.append(str(self.stage1.isEarly))
+            arr.append(str(self.stage1.isAbsent))
+
+        else:       #下午
+            self.stage2.check(s_hour)
+            self.stage2.judgeThree1(s_hour)
+            arr.append(str(self.stage2.isLate))
+            arr.append(str(self.stage2.isEarly))
+            arr.append(str(self.stage2.isAbsent))
+        res = Connect.sendJSON("/check", SendJSON.getCheckJSON(arr))
+        if res["msg"] == "ok":
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:green;background:white;")
+                err.showMessage("打卡成功！")
+
+                self.jumpToHome()
 
         else:
-            err = QtWidgets.QErrorMessage(self.frame)
-            err.setStyleSheet("color:red;background:white;")
-            err.showMessage("打卡失败！")
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:red;background:white;")
+                err.showMessage("打卡失败！")
 
             #
         # self.label_54.clicked.connect(lambda: self.onLabel_4Click()) #待实现
@@ -1344,16 +1381,31 @@ class Ui_Home(object):
         self.jumpToHome()
 
     def onPushButton_2Click(self):
+        res = Connect.sendJSON("/info",{})
+        self.label_22.setText( "UID:          "+  res["uid"])
+        self.label_55.setText("昵称:          " + res["name"])
+        self.label_56.setText("性别:          " + res["sex"])
+        self.label_57.setText("生日:          " + res["birth"])
+        s = self.label_57.text()[13:len(self.label_57.text())].replace("-","")
+        print(s)
+        self.setAge(s)
         self.jumpToModify1()
 
     def onPushButton_3Click(self):
         self.jumpToCount()
 
     def onPushButton_4Click(self):
+        res = Connect.sendJSON("/messages",{})
         self.jumpToMessage1()
 
     def onPushButton_5Click(self):
         self.jumpToLeave()
+
+    def onPushButton_6Click(self):
+        arr=[]
+        arr.append(self.lineEdit_2.text())
+        arr.append(self.lineEdit_4.text())
+        Connect.sendJSON("/addCompany",SendJSON.getAddCompanyJSON(arr))
 
     def onPushButton_9Click(self):
         arr = []
@@ -1361,7 +1413,8 @@ class Ui_Home(object):
         arr.append(self.dateEdit.text() + " " + self.timeEdit.text())
         arr.append(self.dateEdit_2.text() + " " + self.timeEdit_2.text())
         arr.append(self.plainTextEdit.toPlainText())
-        if 1 != Connect.sendJSON("/leave", SendJSON.getLeaveJSON(arr)):
+        res = Connect.sendJSON("/leave", SendJSON.getLeaveJSON(arr))
+        if res["msg"] != "ok":
             self.hasShow = not self.hasShow
             if self.hasShow == False:
                 err = QtWidgets.QErrorMessage(self.frame)
@@ -1374,8 +1427,21 @@ class Ui_Home(object):
                 err.setStyleSheet("color:green;background:white;")
                 err.showMessage("发送成功！")
 
-        # def onPushButton_8Click(self):
-        # self.jumpToTakePhoto2()
+
+
+    def onPushButton_10Click(self):
+        arr=[]
+        arr.append(self.dateEdit_3.text())
+        res = Connect.sendJSON("/attend",SendJSON.getAttendJSON(arr))
+        if res["msg"] == "ok":
+            return  #待完善
+        else:
+            self.hasShow = not self.hasShow
+            if self.hasShow == False:
+                err = QtWidgets.QErrorMessage(self.frame)
+                err.setStyleSheet("color:red;background:white;")
+                err.showMessage("查询失败！")
+
 
     def onPushButton_13Click(self):
         self.jumpToHome()
@@ -1401,28 +1467,33 @@ class Ui_Home(object):
     def onLabel_7Click(self):
         self.nameDialog()
         arr = []
-        arr.append(self.label_55.text())
-        arr.append(None)
-        arr.append(None)
-        if "1" != Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr)):
+        arr.append(self.label_55.text()[13:len(self.label_55.text())])
+        arr.append("0")
+        arr.append("0")
+        res = Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr))
+        print(res)
+        if res["msg"] != "ok":
             self.label_55.setText("昵称")
 
     def onLabel_8Click(self):
         self.sexDialog()
         arr = []
-        arr.append(None)
-        arr.append(self.label_56.text())
-        arr.append(None)
-        if "1" != Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr)):
+        arr.append("")
+        arr.append(self.label_56.text()[13:len(self.label_56.text())])
+        arr.append("")
+        res = Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr))
+        print(res)
+        if res["msg"] != "ok":
             self.label_56.setText("性别")
 
     def onLabel_9Click(self):
-        if True == self.setAge():
+        if True == self.setAge(None):
             arr = []
-            arr.append(None)
-            arr.append(None)
-            arr.append(self.label_57.text())
-            if "1" != Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr)):
+            arr.append("")
+            arr.append("")
+            arr.append(self.label_57.text()[13:len(self.label_57.text())])
+            res =  Connect.sendJSON("/modify", SendJSON.getModifyJSON(arr))
+            if res["msg"] != "ok":
                 self.label_57.setText("生日")
                 self.label_58.setText("年龄")
 
@@ -1488,8 +1559,9 @@ class Ui_Home(object):
 
         return age
 
-    def setAge(self):
-        born = self.birthDialog()
+    def setAge(self,born):
+        if born==None:
+            born = self.birthDialog()
         if born != None:
             age = self.calculate_age(born)
             self.label_58.setText('年龄:          ' + str(age))
