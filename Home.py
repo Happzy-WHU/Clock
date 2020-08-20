@@ -1231,7 +1231,7 @@ class Ui_Home(object):
         self.pushButton_6.setText(_translate("Form", "提 交"))
         self.lineEdit_3.setPlaceholderText(_translate("Form", "申请人编号"))
         self.lineEdit_4.setPlaceholderText(_translate("Form", "组织名称"))
-        self.label_54.setText(_translate("Form", "头像"))
+        self.label_54.setText(_translate("Form", "账号"))
         self.label_55.setText(_translate("Form", "昵称"))
         self.label_56.setText(_translate("Form", "性别"))
         self.label_57.setText(_translate("Form", "生日"))
@@ -1365,7 +1365,6 @@ class Ui_Home(object):
                     (self.frame, "Error", "不在打卡时间！", QMessageBox.Yes | QMessageBox.No)
             return
 
-        arr.append(s)
 
         if s_hour < 12:  # 上午
             self.stage1.check(s_hour)
@@ -1400,20 +1399,16 @@ class Ui_Home(object):
                 arr.append("4")
                 arr.append(False)
 
-        res = Connect.sendJSON("/check", SendJSON.getCheckJSON(arr))
+        res = Connect.sendJSON("/attendance/clock", SendJSON.getCheckJSON(arr))
         if res["msg"] == "ok":
             if self.capTime == 0:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:green;background:white;")
-                err.showMessage("打卡成功！")
+                self.showInfomationDialog("打卡","打卡成功！")
                 self.capTime = 1
                 self.jumpToHome()
 
         else:
             if self.capTime == 0:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:red;background:white;")
-                err.showMessage("打卡失败！")
+                self.showErrDialog("打卡失败！")
                 self.capTime = 1
 
             #
@@ -1424,15 +1419,29 @@ class Ui_Home(object):
     def onPushButtonClick(self):
         self.jumpToHome()
 
+    def xstr(self,s):
+        if s is None:
+            return ''
+        else:
+            return str(s)
     def onPushButton_2Click(self):
-        res = Connect.sendJSON("/info", {})
-        self.label_22.setText("UID:          " + res["uid"])
-        self.label_55.setText("昵称:          " + res["name"])
-        self.label_56.setText("性别:          " + res["sex"])
-        self.label_57.setText("生日:          " + res["birth"])
+        res = Connect.sendJSON("/user", {})
+        if res==None:
+            self.showErrDialog("获取信息失败")
+            return
+
+        print(res)
+        self.label_22.setText("UID:          " + str(res["id"]))
+        self.label_55.setText("昵称:          " + res["nickname"])
+        if("gender" in res):
+            self.label_56.setText("性别:          " + self.xstr(res["gender"]))
+        if("birth" in res):
+            self.label_57.setText("生日:          " + self.xstr(res["birth"]))
+        self.label_54.setText("账号:          "+res["email"])
         s = self.label_57.text()[13:len(self.label_57.text())].replace("-", "")
-        print(s)
-        self.setAge(s)
+        print(self.label_57.text())
+        if self.label_57.text()!="生日":
+            self.setAge(s)
         self.jumpToModify1()
 
     def onPushButton_3Click(self):
@@ -1440,10 +1449,17 @@ class Ui_Home(object):
 
     def onPushButton_4Click(self):
         self.listWidget.clear()
-        res = Connect.sendJSON("/messages", {})
-        arr = Message.getApplyMessage(res["apply"])
-        arr.extend(Message.getInviteMessage(res["invite"]))
-        arr.extend(Message.getNormalMessage(res["msg"]))
+        res = Connect.sendJSON("/message/usershow_message", {})
+        if res==None:
+            self.showErrDialog("获取信息失败！")
+            return
+        arr=[]
+        if res["apply"]!=[]:
+            arr = Message.getApplyMessage(res["apply"])
+        if res["invite"]!=[]:
+            arr.extend(Message.getInviteMessage(res["invite"]))
+        if res["msg"] != []:
+            arr.extend(Message.getNormalMessage(res["msg"]))
         print(arr)
         arr = Message.sortMessages(arr)
         for i in range(len(arr)):
@@ -1490,7 +1506,10 @@ class Ui_Home(object):
                 arr.append(mid)
                 arr.append(type)
                 arr.append(s2)
-                res = Connect.sendJSON("/read", {"id": mid})
+                res = Connect.sendJSON("/message/userdeal_message", SendJSON.getMessageJSON(arr))
+                if res==None:
+                    self.showErrDialog("获取信息失败！")
+                    return
                 if res["msg"] == "ok":
                     self.onPushButton_4Click()
 
@@ -1498,7 +1517,7 @@ class Ui_Home(object):
         print(self.listWidget.currentRow())
         print(self.typeStack)
         print(self.midStack)
-        if self.typeStack[self.listWidget.currentRow()]=="2":
+        if self.typeStack[self.listWidget.currentRow()]=="3":
             self.jumpToMessage2()
 
     def onPushButton_5Click(self):
@@ -1508,40 +1527,56 @@ class Ui_Home(object):
         arr = []
         arr.append(self.lineEdit_2.text())
         arr.append(self.lineEdit_4.text())
-        Connect.sendJSON("/addCompany", SendJSON.getAddCompanyJSON(arr))
+        arr.append(str(datetime.now()))
+        arr.append(1)
+        arr.append(1)
+        print(SendJSON.getAddCompanyJSON(arr))
+        res = Connect.sendJSON("/apply/orguseradd", SendJSON.getAddCompanyJSON(arr))
+        if res["msg"]=="ok":
+            self.showInfomationDialog("发送申请","申请发送成功！")
+
 
     def onPushButton_9Click(self):
         arr = []
-        arr.append(self.comboBox.currentText())
+        d1 = datetime.strptime(self.dateEdit.text() + " " + self.timeEdit.text()+":00",
+                                     "%Y-%m-%d %H:%M:%S")
+        d2 = datetime.strptime(self.dateEdit_2.text() + " " + self.timeEdit_2.text()+":00",
+                          "%Y-%m-%d %H:%M:%S")
         arr.append(self.dateEdit.text() + " " + self.timeEdit.text())
         arr.append(self.dateEdit_2.text() + " " + self.timeEdit_2.text())
+        arr.append(1)
+        arr.append(self.comboBox.currentIndex()+1)
+        arr.append(str(datetime.now().strftime( "%Y-%m-%d %H:%M:%S")))
+        arr.append(d2.day-d1.day+1)
         arr.append(self.plainTextEdit.toPlainText())
-        res = Connect.sendJSON("/leave", SendJSON.getLeaveJSON(arr))
+        print(SendJSON.getLeaveJSON(arr))
+        res = Connect.sendJSON("/off/off_apply", SendJSON.getLeaveJSON(arr))
+
+        print(res)
+        
         if res["msg"] != "ok":
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:red;background:white;")
-                err.showMessage("发送失败！")
+            self.showErrDialog("发送失败！")
         else:
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:green;background:white;")
-                err.showMessage("发送成功！")
+            self.showInfomationDialog("请假","请假发送成功！")
 
     def onPushButton_10Click(self):
         arr = []
-        arr.append(self.dateEdit_3.text())
-        res = Connect.sendJSON("/attend", SendJSON.getAttendJSON(arr))
-        if res["msg"] == "ok":
-            return  # 待完善
-        else:
-            self.hasShow = not self.hasShow
-            if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:red;background:white;")
-                err.showMessage("查询失败！")
+        arr.append(self.dateEdit_3.date().month())
+        print(SendJSON.getAttendJSON(arr))
+        res = Connect.sendJSON("/monthsta/monthstaquery", {"Mid":1})
+        self.label_27.setText("缺勤统计："+str(res["absent"]))
+        self.label_30.setText("早退统计："+str(res["early"]))
+        self.label_26.setText("迟到统计："+str(res["late"]))
+        self.label_28.setText("请假统计："+str(res["off"]))
+        # if res["msg"] == "ok":
+        #
+        #     return  # 待完善
+        # else:
+        #     self.hasShow = not self.hasShow
+        #     if self.hasShow == False:
+        #         err = QtWidgets.QErrorMessage(self.frame)
+        #         err.setStyleSheet("color:red;background:white;")
+        #         err.showMessage("查询失败！")
 
     def onPushButton_13Click(self):
         self.jumpToHome()
@@ -1763,6 +1798,20 @@ class Ui_Home(object):
                 ui.setupUi(self.WidgetStack[0])
                 ui.retranslateUi(self.WidgetStack[0])
         self.WidgetStack[0].show()
+
+    def showInfomationDialog(self,title,text):
+        self.hasShow=not self.hasShow
+        if self.hasShow==False:
+            reply = QMessageBox.information \
+            (self.frame, title, text, QMessageBox.Yes | QMessageBox.No)
+            return reply
+
+    def showErrDialog(self,text):
+        self.hasShow = not self.hasShow
+        if self.hasShow == False:
+            err = QtWidgets.QErrorMessage(self.frame)
+            err.setStyleSheet("color:red;background:white;")
+            err.showMessage(text)
 
     # </editor-fold>
 

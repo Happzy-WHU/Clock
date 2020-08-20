@@ -10,7 +10,7 @@ import Compare
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/',methods=["post","get"])
 def hello_world():
     return 'Hello World!'
 
@@ -29,12 +29,14 @@ def JudgeOnePerson(UID, pic_name):
         return "0"
 
     argv=[]
-    argv.append("Model")
+    argv.append("Model/model.pb")
     argv.append("User/"+UID+".jpg")
     argv.append("tem/"+pic_name)
     if Compare.main(Compare.parse_arguments(argv))==True:
+        os.remove("tem/"+pic_name)
         return "1"
     else:
+        os.remove("tem/"+pic_name)
         return "0"
 
 

@@ -3,68 +3,63 @@ import json
 
 def getAddCompanyJSON(arr):
     s =  {
-			"cid": None,
-			"cname": None
+	"cid": None,
+	"cname": None,
+    "applytime": None,
+    "read":None,
+    "proc":None
     }
+
 
     s["cid"] = arr[0]
     s["cname"] = arr[1]
+    s["applytime"]=arr[2]
+    s["read"]=arr[3]
+    s["proc"]=arr[4]
     return s
 
 def getAttendJSON(arr):
     s =  {
-            "month": None
+            "Mid": None
     }
 
-    s["month"] = arr[0]
+    s["Mid"] = arr[0]
     return s
 
 def getCheckJSON(arr):
     s =  {
-        "picture": None,
-        "time":None,
-        "isLate": None,
-        "isEarly": None,
-        "isAbsent": None,
-        "stage":None,
+        "pic": None,
+        "type":None,
         "isFirst":None
     }
 
-    s["picture"] = arr[0]
-    s["time"] = arr[1]
-    s["isLate"] = arr[2]
-    s["isEarly"] = arr[3]
-    s["isAbsent"] = arr[4]
-    s["stage"]=arr[5]
-    s["isFirst"]=arr[6]
-
+    s["pic"] = arr[0]
+    s["type"] = arr[1]
+    s["isFirst"] = arr[2]
     return s
 
 
 def getLeaveJSON(arr):
     s =  {
-            "type": None,
-            "Off_Tim":None,
-            "Offend_Tim": None,
-            "describe":None
-        }
+        "starttime": None,
+        "endtime": None,
+        "proc": None,
+        "type": None,
+        "applytime": None,
+        "Offday":None,
+        "desc": None,
 
-    s["type"] = arr[0]
-    s["Off_Tim"] = arr[1]
-    s["Offend_Tim"] = arr[2]
-    s["describe"] = arr[3]
-    return s
-
-def getLoginJSON(arr):
-    s = {
-        "username": None,
-        "passwprd": None,
     }
 
-    s["username"] = arr[0]
-    s["passwprd"] = arr[1]
-
+    s["starttime"] = arr[0]
+    s["endtime"] = arr[1]
+    s["proc"] = arr[2]
+    s["type"] = arr[3]
+    s["applytime"] = arr[4]
+    s["Offday"] = arr[5]
+    s["desc"] = arr[6]
     return s
+
 
 def getModifyJSON(arr):
     s = {
@@ -81,14 +76,16 @@ def getModifyJSON(arr):
 
 def getRegisterJSON(arr):
     s = {
-            "username": None,
-            "password": None,
-            "email": None
+            "account": None,
+            "secret": None,
+        "nickname":None,
+        "type":None
         }
 
-    s["username"] = arr[0]
-    s["password"] = arr[1]
-    s["email"] = arr[2]
+    s["account"] = arr[0]
+    s["secret"] = arr[1]
+    s["nickname"]=arr[2]
+    s["type"]=arr[3]
     return s
 
 def getMessageJSON(arr):
@@ -102,3 +99,15 @@ def getMessageJSON(arr):
     s["type"] = arr[1]
     s["proc"] = arr[2]
     return s
+
+def getLoginJSON(arr):
+    s={
+        "account":None,
+        "scret":None,
+        "type":None
+    }
+    s["account"] = arr[0]
+    s["secret"] = arr[1]
+    s["type"] = arr[2]
+    return s
+

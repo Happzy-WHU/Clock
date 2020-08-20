@@ -81,6 +81,7 @@ class Ui_Register(object):
         self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_2.setGeometry(QtCore.QRect(100, 240, 301, 31))
         self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)
+        self.lineEdit_2.setText("")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
         self.lineEdit_6.setGeometry(QtCore.QRect(100, 320, 301, 41))
@@ -109,29 +110,43 @@ class Ui_Register(object):
         Form.setWindowTitle(_translate("Form", "智慧考勤"))
         self.lineEdit.setPlaceholderText(_translate("Form", "Username"))
         self.label.setText(_translate("Form", "请输入个人信息"))
-        self.lineEdit_2.setText(_translate("Form", "Password"))
-        self.lineEdit_2.setPlaceholderText(_translate("Form", "Password"))
+        self.lineEdit_2.setText(_translate("Form", ""))
+        self.lineEdit_2.setPlaceholderText(_translate("Form", "Passwoed"))
         self.lineEdit_6.setPlaceholderText(_translate("Form", "Email Address"))
         self.pushButton.setText(_translate("Form", "注 册"))
         self.pushButton_2.setText(_translate("Form", "返 回"))
 
         self.pushButton_2.clicked.connect(lambda: self.onPushButton_2Click())
         self.pushButton.clicked.connect(lambda :self.onPushButton_Click())
+
+        self.lineEdit_2.textChanged.connect(self.textChanged2)
+        self.lineEdit_6.textChanged.connect(self.textChanged6)
+        self.lineEdit.textChanged.connect(self.textChanged)
+
         #self.pushButton_2.clicked.connect(lambda: self.onPushButtonClick()) #注册接口
+
+    def textChanged2(self, text):
+        self.lineEdit_2.setText(text)
+    def textChanged6(self, text):
+        self.lineEdit_6.setText(text)
+    def textChanged(self, text):
+        self.lineEdit.setText(text)
 
     def onPushButton_Click(self):
         arr=[]
-        arr.append(self.lineEdit.text())
-        arr.append(self.lineEdit_2.text())
         arr.append(self.lineEdit_6.text())
-        s = Connect.sendJSON("/register",SendJSON.getRegisterJSON(arr))
-        if s=="0":
+        arr.append(self.lineEdit_2.text())
+        arr.append(self.lineEdit.text())
+        arr.append(100)
+        print(SendJSON.getRegisterJSON(arr))
+        res = Connect.sendJSON("/client/register",SendJSON.getRegisterJSON(arr))
+        if res==None:
             self.hasShow = not self.hasShow
             if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
-                err.setStyleSheet("color:red;background:white;")
-                err.showMessage("用户名或手机已被占用！")
-        else:
+                reply = QtWidgets.QMessageBox.information \
+                 (self.frame, "Question", "账号或用户名已被占用！", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            return
+        if res["msg"]=="ok":
             self.hasShow = not self.hasShow
             if self.hasShow == False:
                 err = QtWidgets.QErrorMessage(self.frame)
@@ -146,7 +161,6 @@ class Ui_Register(object):
         hasFind = False
         import src.Login
         self.WidgetStack[3].hide()
-        
         for ui in self.UIStack:
             print(ui.__class__.__name__)
             if ui.__class__.__name__ == "Ui_Login":

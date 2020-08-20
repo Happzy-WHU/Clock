@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src import resources,ClickLabel,Connect
+from src import resources,ClickLabel,Connect,SendJSON
 
 
 
@@ -18,7 +18,7 @@ class Ui_Login(QtWidgets.QWidget):
 
     WidgetStack = None
     UIStack = None
-
+    hasShow = True
 
     def setupUi(self, Widget):
         Widget.setObjectName("Widget")
@@ -143,12 +143,39 @@ class Ui_Login(QtWidgets.QWidget):
         self.pushButton.clicked.connect(lambda:self.onPushButtonClick())
         self.label_2.clicked.connect(lambda:self.onLabel_2Click())
         self.label_3.clicked.connect(lambda:self.onLabel_3Click())
+        self.lineEdit_2.textChanged.connect(self.textChanged2)
+        self.lineEdit.textChanged.connect(self.textChanged)
+
+    def textChanged(self,text):
+        self.lineEdit.setText(text)
+    def textChanged2(self,text):
+        self.lineEdit_2.setText(text)
 
     def onPushButtonClick(self):
-        self.jumpToHome()
+        arr=[]
+        arr.append(self.lineEdit.text())
+        arr.append(self.lineEdit_2.text())
+        arr.append(100)
+
+        print(SendJSON.getLoginJSON(arr))
+
+        res = Connect.sendJSON("/token",SendJSON.getLoginJSON(arr))
+        if res==None:
+            self.hasShow=not self.hasShow
+            if self.hasShow==False:
+                reply = QtWidgets.QMessageBox.information \
+                (self.frame, "error", "错误的用户名密码", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            return
+        s = res["token"]
+        if s!=None and s!="":
+            with open("token", mode="w") as f:
+                f.write(s)
+            self.jumpToHome()
+        else:
+            reply = QtWidgets.QMessageBox.information \
+                (self.frame, "error", "错误的用户名密码", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
 
     def onLabel_2Click(self):
-
         self.jumpToRegister()
 
     def onLabel_3Click(self):
@@ -159,7 +186,6 @@ class Ui_Login(QtWidgets.QWidget):
         hasFind = False
         import src.Register
         self.WidgetStack[1].hide()
-        
         for ui in self.UIStack:
             print(ui.__class__.__name__)
             if ui.__class__.__name__ == "Ui_Register":
@@ -209,7 +235,6 @@ class Ui_Login(QtWidgets.QWidget):
             newUi.retranslateUi(self.WidgetStack[2])
             self.UIStack.append(newUi)
         self.WidgetStack[2].show()
-
 
 
 

@@ -36,9 +36,9 @@ class InviteMessage:
 
 class NormalMessage:
     def __init__(self,mes):
-        self.time = mes["sendtime"]
+        self.time = mes["date"]
         self.hasRead = mes["read"]
-        self.content = mes["postmessage"]
+        self.content = mes["content"]
         self.mid=mes["id"]
 
     time = ""
@@ -67,8 +67,8 @@ def getNormalMessage(arr):
 
 def foreNew(str1,str2):
 
-    str1 = datetime.strptime(str1,"%Y-%m-%d %H:%M:%S")
-    str2 = datetime.strptime(str2,"%Y-%m-%d %H:%M:%S")
+    str1 = datetime.strptime(str1,"%Y-%m-%d")
+    str2 = datetime.strptime(str2,"%Y-%m-%d")
     if (str1-str2).days >= -0:
         return True
     else:

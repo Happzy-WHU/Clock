@@ -21,7 +21,7 @@ def f2():
     print(request.get_json())
     return {"msg":"ok"}
 
-@app.route('/v1/leave',methods=["post","get"])
+@app.route('/v1/off/off_apply',methods=["post","get"])
 def f3():
     print(request.get_json())
     return {"msg":"ok"}
