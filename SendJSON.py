@@ -103,7 +103,7 @@ def getMessageJSON(arr):
 def getLoginJSON(arr):
     s={
         "account":None,
-        "scret":None,
+        "secret":None,
         "type":None
     }
     s["account"] = arr[0]

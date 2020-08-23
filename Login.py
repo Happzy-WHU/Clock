@@ -6,12 +6,16 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRect,QMetaObject,QCoreApplication,QSize
+from PyQt5.QtGui import QFont,QPixmap,QIcon
+from PyQt5.QtWidgets import QFrame,QLabel,QPushButton,QWidget,QLineEdit,QErrorMessage,QToolButton
+
+
 from src import resources,ClickLabel,Connect,SendJSON
 
 
 
-class Ui_Login(QtWidgets.QWidget):
+class Ui_Login(QWidget):
     def __init__(self, WidgetStack, UIStack):
         self.WidgetStack = WidgetStack
         self.UIStack = UIStack
@@ -23,8 +27,8 @@ class Ui_Login(QtWidgets.QWidget):
     def setupUi(self, Widget):
         Widget.setObjectName("Widget")
         Widget.resize(1013, 772)
-        Widget.setMinimumSize(QtCore.QSize(492, 522))
-        Widget.setMaximumSize(QtCore.QSize(1076, 845))
+        Widget.setMinimumSize(QSize(492, 522))
+        Widget.setMaximumSize(QSize(1076, 845))
         Widget.setStyleSheet("*{\n"
 "font-size:24px;\n"
 "font-family:Century Gothic;\n"
@@ -66,32 +70,32 @@ class Ui_Login(QtWidgets.QWidget):
 "border-radius:15px;\n"
 "\n"
 "}")
-        self.frame = QtWidgets.QFrame(Widget)
-        self.frame.setGeometry(QtCore.QRect(240, 120, 491, 521))
+        self.frame = QFrame(Widget)
+        self.frame.setGeometry(QRect(240, 120, 491, 521))
         self.frame.setStyleSheet("Frame{hiden();}")
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(160, 70, 161, 61))
+        self.label = QLabel(self.frame)
+        self.label.setGeometry(QRect(160, 70, 161, 61))
         self.label.setObjectName("label")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(80, 420, 321, 41))
+        self.pushButton = QPushButton(self.frame)
+        self.pushButton.setGeometry(QRect(80, 420, 321, 41))
         self.pushButton.setStyleSheet("font: 75 14pt \"Adobe Garamond Pro Bold\";\n"
 "")
         self.pushButton.setObjectName("pushButton")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(70, 190, 351, 41))
+        self.lineEdit = QLineEdit(self.frame)
+        self.lineEdit.setGeometry(QRect(70, 190, 351, 41))
         self.lineEdit.setText("")
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(70, 280, 351, 41))
+        self.lineEdit_2 = QLineEdit(self.frame)
+        self.lineEdit_2.setGeometry(QRect(70, 280, 351, 41))
         self.lineEdit_2.setText("")
-        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.lineEdit_2.setEchoMode(QLineEdit.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_2 = ClickLabel.ClickLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(90, 340, 91, 31))
-        font = QtGui.QFont()
+        self.label_2.setGeometry(QRect(90, 340, 91, 31))
+        font = QFont()
         font.setFamily("Adobe Garamond Pro Bold")
         font.setPointSize(12)
         font.setBold(False)
@@ -105,8 +109,8 @@ class Ui_Login(QtWidgets.QWidget):
 "")
         self.label_2.setObjectName("label_2")
         self.label_3 = ClickLabel.ClickLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(310, 340, 91, 31))
-        font = QtGui.QFont()
+        self.label_3.setGeometry(QRect(310, 340, 91, 31))
+        font = QFont()
         font.setFamily("Adobe Garamond Pro Bold")
         font.setPointSize(12)
         font.setBold(False)
@@ -118,20 +122,20 @@ class Ui_Login(QtWidgets.QWidget):
 "font: 75 12pt \"Adobe Garamond Pro Bold\";\n"
 "")
         self.label_3.setObjectName("label_3")
-        self.toolButton = QtWidgets.QToolButton(Widget)
-        self.toolButton.setGeometry(QtCore.QRect(420, 40, 131, 121))
+        self.toolButton = QToolButton(Widget)
+        self.toolButton.setGeometry(QRect(420, 40, 131, 121))
         self.toolButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/resources/people.png"), QIcon.Normal, QIcon.Off)
         self.toolButton.setIcon(icon)
-        self.toolButton.setIconSize(QtCore.QSize(64, 64))
+        self.toolButton.setIconSize(QSize(64, 64))
         self.toolButton.setObjectName("toolButton")
 
         self.retranslateUi(Widget)
-        QtCore.QMetaObject.connectSlotsByName(Widget)
+        QMetaObject.connectSlotsByName(Widget)
 
     def retranslateUi(self, Widget):
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         Widget.setWindowTitle(_translate("Widget", "智慧考勤"))
         self.label.setText(_translate("Widget", "LOGIN  HERE"))
         self.pushButton.setText(_translate("Widget", "登  录"))
@@ -163,8 +167,9 @@ class Ui_Login(QtWidgets.QWidget):
         if res==None:
             self.hasShow=not self.hasShow
             if self.hasShow==False:
-                reply = QtWidgets.QMessageBox.information \
-                (self.frame, "error", "错误的用户名密码", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                err = QErrorMessage(self.frame)
+                err.setStyleSheet("color:#880000;background:white;")
+                err.showMessage("错误的用户名密码！")
             return
         s = res["token"]
         if s!=None and s!="":
@@ -172,8 +177,9 @@ class Ui_Login(QtWidgets.QWidget):
                 f.write(s)
             self.jumpToHome()
         else:
-            reply = QtWidgets.QMessageBox.information \
-                (self.frame, "error", "错误的用户名密码", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            err = QErrorMessage(self.frame)
+            err.setStyleSheet("color:#880000;background:white;")
+            err.showMessage("错误的用户名密码！")
 
     def onLabel_2Click(self):
         self.jumpToRegister()

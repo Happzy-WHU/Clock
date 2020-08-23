@@ -1,6 +1,7 @@
-from PyQt5 import QtWidgets,QtCore
-class ClickLabel(QtWidgets.QLabel):
-    clicked = QtCore.pyqtSignal()
+from PyQt5.QtCore import pyqtSignal,Qt
+from PyQt5.QtWidgets import QLabel
+class ClickLabel(QLabel):
+    clicked = pyqtSignal()
     def mouseReleaseEvent(self, QMouseEvent):
-        if QMouseEvent.button() == QtCore.Qt.LeftButton:
+        if QMouseEvent.button() == Qt.LeftButton:
             self.clicked.emit()

@@ -1,18 +1,18 @@
 #coding=utf-8
 from src import resources
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget,QApplication
 import src.Login
 
 import sys
 UIStack = []
 
-app=QtWidgets.QApplication(sys.argv)
-LoginWidget = QtWidgets.QWidget()
-HomeWidget = QtWidgets.QWidget()
-PasswordWidget = QtWidgets.QWidget()
-RegisterWidget = QtWidgets.QWidget()
-ResetWidget = QtWidgets.QWidget()
+app=QApplication(sys.argv)
+LoginWidget = QWidget()
+HomeWidget = QWidget()
+PasswordWidget = QWidget()
+RegisterWidget = QWidget()
+ResetWidget = QWidget()
 
 
 WidgetStack = []

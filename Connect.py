@@ -6,17 +6,20 @@ def sendJSON(portname,data):
     url="http://175.24.118.43:5000/v1"+portname
     with open("token") as f:
         s = f.read()
-        if portname=="/token":
-            response=requests.post(url, json=data)
-        if portname=="/client/register" or portname == "/message/userdeal_message" or portname == "/attendance/clock":
-            response=requests.post(url, auth = HTTPBasicAuth(s,''),json=data)
-        if portname=="/message/usershow_message":
-            response = requests.post(url, auth=HTTPBasicAuth(s, ''))
+        try:
+            if portname=="/token":
+                response=requests.post(url, json=data)
+            if portname=="/client/register" or portname == "/message/userdeal_message" or portname == "/attendance/clock" or portname == "/modify":
+                response=requests.post(url, auth = HTTPBasicAuth(s,''),json=data)
+            if portname=="/message/usershow_message":
+                response = requests.post(url, auth=HTTPBasicAuth(s, ''))
 
-        if portname=="/monthsta/monthstaquery" or portname == "/apply/orguseradd" or portname == "/off/off_apply":
-            response = requests.get(url, auth=HTTPBasicAuth(s, ''),json=data)
-        if portname=="/user":
-            response = requests.get(url, auth=HTTPBasicAuth(s, ''))
+            if portname=="/monthsta/monthstaquery" or portname == "/apply/orguseradd" or portname == "/off/off_apply":
+                response = requests.get(url, auth=HTTPBasicAuth(s, ''),json=data)
+            if portname=="/user":
+                response = requests.get(url, auth=HTTPBasicAuth(s, ''))
+        except requests.exceptions.ConnectionError:
+            return None
         f.close()
 
 

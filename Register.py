@@ -6,7 +6,11 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRect,QMetaObject,QCoreApplication,QSize
+from PyQt5.QtGui import QPixmap,QIcon
+from PyQt5.QtWidgets import QFrame,QLabel,QPushButton,QLineEdit,QErrorMessage,QToolButton
+
+
 # from src import Login
 from src import resources,Connect,SendJSON
 
@@ -66,47 +70,47 @@ class Ui_Register(object):
 "color:red;\n"
 "}\n"
                            )
-        self.frame = QtWidgets.QFrame(Form)
-        self.frame.setGeometry(QtCore.QRect(240, 120, 491, 521))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame = QFrame(Form)
+        self.frame.setGeometry(QRect(240, 120, 491, 521))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(100, 140, 301, 41))
+        self.lineEdit = QLineEdit(self.frame)
+        self.lineEdit.setGeometry(QRect(100, 140, 301, 41))
         self.lineEdit.setText("")
         self.lineEdit.setObjectName("lineEdit")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(160, 50, 191, 41))
+        self.label = QLabel(self.frame)
+        self.label.setGeometry(QRect(160, 50, 191, 41))
         self.label.setObjectName("label")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(100, 240, 301, 31))
-        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)
+        self.lineEdit_2 = QLineEdit(self.frame)
+        self.lineEdit_2.setGeometry(QRect(100, 240, 301, 31))
+        self.lineEdit_2.setEchoMode(QLineEdit.PasswordEchoOnEdit)
         self.lineEdit_2.setText("")
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit_6 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_6.setGeometry(QtCore.QRect(100, 320, 301, 41))
+        self.lineEdit_6 = QLineEdit(self.frame)
+        self.lineEdit_6.setGeometry(QRect(100, 320, 301, 41))
         self.lineEdit_6.setText("")
         self.lineEdit_6.setObjectName("lineEdit_6")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(30, 440, 171, 41))
+        self.pushButton = QPushButton(self.frame)
+        self.pushButton.setGeometry(QRect(30, 440, 171, 41))
         self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(280, 440, 171, 41))
+        self.pushButton_2 = QPushButton(self.frame)
+        self.pushButton_2.setGeometry(QRect(280, 440, 171, 41))
         self.pushButton_2.setObjectName("pushButton_2")
-        self.toolButton = QtWidgets.QToolButton(Form)
-        self.toolButton.setGeometry(QtCore.QRect(420, 30, 131, 121))
+        self.toolButton = QToolButton(Form)
+        self.toolButton.setGeometry(QRect(420, 30, 131, 121))
         self.toolButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/resources/people.png"), QIcon.Normal, QIcon.Off)
         self.toolButton.setIcon(icon)
-        self.toolButton.setIconSize(QtCore.QSize(64, 64))
+        self.toolButton.setIconSize(QSize(64, 64))
         self.toolButton.setObjectName("toolButton")
 
         self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "智慧考勤"))
         self.lineEdit.setPlaceholderText(_translate("Form", "Username"))
         self.label.setText(_translate("Form", "请输入个人信息"))
@@ -143,13 +147,14 @@ class Ui_Register(object):
         if res==None:
             self.hasShow = not self.hasShow
             if self.hasShow == False:
-                reply = QtWidgets.QMessageBox.information \
-                 (self.frame, "Question", "账号或用户名已被占用！", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                err = QErrorMessage(self.frame)
+                err.setStyleSheet("color:#880000;background:white;")
+                err.showMessage("注册失败！")
             return
         if res["msg"]=="ok":
             self.hasShow = not self.hasShow
             if self.hasShow == False:
-                err = QtWidgets.QErrorMessage(self.frame)
+                err = QErrorMessage(self.frame)
                 err.setStyleSheet("color:green;background:white;")
                 err.showMessage("注册成功！")
 

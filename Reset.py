@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Reset.ui'
-#
-# Created by: PyQt5 UI code generator 5.6
-#
-# WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRect,QMetaObject,QCoreApplication,QSize
+from PyQt5.QtGui import QPixmap,QIcon
+from PyQt5.QtWidgets import QFrame,QLabel,QPushButton,QLineEdit,QToolButton
+
+
+
 from src import resources
 
 class Ui_Reset(object):
@@ -61,39 +61,39 @@ class Ui_Reset(object):
 "border-radius:15px;\n"
 "\n"
 "}")
-        self.frame = QtWidgets.QFrame(reset)
-        self.frame.setGeometry(QtCore.QRect(240, 120, 491, 521))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame = QFrame(reset)
+        self.frame.setGeometry(QRect(240, 120, 491, 521))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(50, 180, 351, 41))
-        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.lineEdit = QLineEdit(self.frame)
+        self.lineEdit.setGeometry(QRect(50, 180, 351, 41))
+        self.lineEdit.setEchoMode(QLineEdit.Password)
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(50, 300, 351, 41))
-        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.lineEdit_2 = QLineEdit(self.frame)
+        self.lineEdit_2.setGeometry(QRect(50, 300, 351, 41))
+        self.lineEdit_2.setEchoMode(QLineEdit.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(170, 80, 101, 41))
+        self.label = QLabel(self.frame)
+        self.label.setGeometry(QRect(170, 80, 101, 41))
         self.label.setObjectName("label")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(120, 410, 231, 41))
+        self.pushButton = QPushButton(self.frame)
+        self.pushButton.setGeometry(QRect(120, 410, 231, 41))
         self.pushButton.setObjectName("pushButton")
-        self.toolButton = QtWidgets.QToolButton(reset)
-        self.toolButton.setGeometry(QtCore.QRect(420, 40, 131, 121))
+        self.toolButton = QToolButton(reset)
+        self.toolButton.setGeometry(QRect(420, 40, 131, 121))
         self.toolButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/resources/people.png"), QIcon.Normal, QIcon.Off)
         self.toolButton.setIcon(icon)
-        self.toolButton.setIconSize(QtCore.QSize(64, 64))
+        self.toolButton.setIconSize(QSize(64, 64))
         self.toolButton.setObjectName("toolButton")
 
         self.retranslateUi(reset)
-        QtCore.QMetaObject.connectSlotsByName(reset)
+        QMetaObject.connectSlotsByName(reset)
 
     def retranslateUi(self, reset):
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         reset.setWindowTitle(_translate("reset", "Form"))
         self.lineEdit.setPlaceholderText(_translate("reset", "Password"))
         self.lineEdit_2.setPlaceholderText(_translate("reset", "Verify Pssword"))

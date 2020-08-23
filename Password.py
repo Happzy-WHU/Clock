@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Password.ui'
-#
-# Created by: PyQt5 UI code generator 5.6
-#
-# WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 from src import resources
+from PyQt5.QtGui import QFont,QPixmap,QIcon
+from PyQt5.QtWidgets import QFrame,QLabel,QPushButton,QLineEdit,QToolButton
+from PyQt5.QtCore import QRect,QMetaObject,QCoreApplication,QSize
+
+
+
 
 class Ui_Password(object):
     def __init__(self, WidgetStack, UIStack):
@@ -60,26 +59,26 @@ class Ui_Password(object):
 "border-radius:15px;\n"
 "\n"
 "}")
-        self.frame = QtWidgets.QFrame(password)
-        self.frame.setGeometry(QtCore.QRect(240, 120, 491, 521))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame = QFrame(password)
+        self.frame.setGeometry(QRect(240, 120, 491, 521))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(190, 70, 111, 51))
+        self.label = QLabel(self.frame)
+        self.label.setGeometry(QRect(190, 70, 111, 51))
         self.label.setObjectName("label")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(120, 430, 231, 41))
+        self.pushButton = QPushButton(self.frame)
+        self.pushButton.setGeometry(QRect(120, 430, 231, 41))
         self.pushButton.setObjectName("pushButton")
-        self.lineEdit = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(70, 190, 351, 41))
+        self.lineEdit = QLineEdit(self.frame)
+        self.lineEdit.setGeometry(QRect(70, 190, 351, 41))
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(70, 300, 351, 41))
+        self.lineEdit_2 = QLineEdit(self.frame)
+        self.lineEdit_2.setGeometry(QRect(70, 300, 351, 41))
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(320, 200, 101, 21))
-        font = QtGui.QFont()
+        self.label_2 = QLabel(self.frame)
+        self.label_2.setGeometry(QRect(320, 200, 101, 21))
+        font = QFont()
         font.setFamily("Adobe Garamond Pro Bold")
         font.setPointSize(12)
         font.setBold(False)
@@ -92,20 +91,20 @@ class Ui_Password(object):
 "font: 75 12pt \"Adobe Garamond Pro Bold\";\n"
 "")
         self.label_2.setObjectName("label_2")
-        self.toolButton = QtWidgets.QToolButton(password)
-        self.toolButton.setGeometry(QtCore.QRect(420, 40, 131, 121))
+        self.toolButton = QToolButton(password)
+        self.toolButton.setGeometry(QRect(420, 40, 131, 121))
         self.toolButton.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/resources/people.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon = QIcon()
+        icon.addPixmap(QPixmap(":/resources/people.png"), QIcon.Normal, QIcon.Off)
         self.toolButton.setIcon(icon)
-        self.toolButton.setIconSize(QtCore.QSize(64, 64))
+        self.toolButton.setIconSize(QSize(64, 64))
         self.toolButton.setObjectName("toolButton")
 
         self.retranslateUi(password)
-        QtCore.QMetaObject.connectSlotsByName(password)
+        QMetaObject.connectSlotsByName(password)
 
     def retranslateUi(self, password):
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         password.setWindowTitle(_translate("password", "智慧考勤"))
         self.label.setText(_translate("password", "找回密码"))
         self.pushButton.setText(_translate("password", "下一步"))

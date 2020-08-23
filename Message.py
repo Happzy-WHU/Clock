@@ -21,7 +21,7 @@ class InviteMessage:
         self.time = mes["invitetime"]
         self.cid = mes["cid"]
         self.hasRead = mes["read"]
-        self.cname = mes["cname"]
+        self.cname = mes["aemail"]
         self.mid=mes["id"]
 
 

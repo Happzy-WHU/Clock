@@ -12,7 +12,7 @@ class stage:
         else:
             s="a"
         with open(filename, mode=s) as f:
-            f.write(self.timeStack[len(self.timeStack)-1] + "\n")
+            f.write(str(self.timeStack[len(self.timeStack)-1])+"\n")
 
 
     def check(self,t_hour):
